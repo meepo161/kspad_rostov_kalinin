@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="50ac2102-2cc5-4e56-bd64-edd1d8d16ede" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries-with-intellij-classes.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/kserialpooler-1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/Head.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/Module.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/TestModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/tests/Test.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/tests/Utils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/Styles.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/TFXViewManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/TestViewModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/Utils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/ViewModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/AggregateView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/authorization/AuthorizationController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/authorization/AuthorizationModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/authorization/AuthorizationView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/authorization/Constants.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/editor/TestItemEditorController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/editor/TestItemEditorModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/editor/TestItemEditorTab.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/prefill/PreFillController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/prefill/PreFillModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/prefill/PreFillTab.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/settings/StandSettingsTab.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/settings/StandSettingsTabController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/settings/main/MainSettingsTab.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/settings/main/MainSettingsViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/settings/users/UserItemViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/settings/users/UserSettingsTab.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/CRC16.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/CS0202Adapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/ChangeAddress.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/Cs0202Request.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/ImitationPressedButtons.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/MeasurementAutomatic.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/MeasurementManual.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/MeasurementStop.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/MeasurementVoltage.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/ReadEeprom.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/requests/ReadResult.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/cs0202/utils/Utils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/serial/SerialAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/stringascii/StringASCIIAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/utils/BitVector.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/adapters/utils/ModbusRegister.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/CM.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/DeviceController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/DeviceRegister.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/IDeviceController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/IDeviceModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/appa/model70x/APPA70x.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/appa/model70x/APPA70xModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/avem3/AVEM3.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/avem3/AVEM3Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/ikas/IKAS8.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/ikas/IKAS8Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/delta/c2000/C2000.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/delta/c2000/C2000Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/instek/gpt/GPT.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/instek/gpt/GPTModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/megaohmmeter/cs02021/CS020201Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/megaohmmeter/cs02021/CS02021.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/mitsubishi/fra8xx/FRA8XX.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/mitsubishi/fra8xx/FRA8XXModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/pr/PR.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/pr/PRModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/th01/TH01.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/th01/TH01Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/trm202/TRM202.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/trm202/TRM202Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/prosoftsystems/ivd3c/IVD3C.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/prosoftsystems/ivd3c/IVD3CModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/satec/pm130/PM130.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/satec/pm130/PM130Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/termodat/r10i5/R10I5.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/termodat/r10i5/R10I5Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/tilkom/T42.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/tilkom/T42Model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/Properties.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/StandData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/database/DatabaseHelper.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/database/entities/ReportFields.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/database/entities/Reports.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/database/entities/TestItemFields.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/database/entities/TestItems.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/protocol/ProtocolsController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/protocol/ProtocolsTab.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/protocol/Saver.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/testitemfields/TestItemFieldScheme.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/testitemfields/TypeEnterField.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/testitemfields/TypeFormatTestItemField.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/users/User.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/storage/users/UsersRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/Common.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/KSPADTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/ProtectionsData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/TestItemData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncN.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/Load.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/maxm/MaxM.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/maxm/MaxMData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/maxm/MaxMModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/maxm/MaxMView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/minm/MinM.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/minm/MinMData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/minm/MinMModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/minm/MinMView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overi/OverI.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overi/OverIData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overi/OverIModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overi/OverIView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overm/OverM.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overm/OverMData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overm/OverMModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overm/OverMView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/startmi/StartMI.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/startmi/StartMIData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/startmi/StartMIModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/startmi/StartMIView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/varyuf/VaryUF.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/varyuf/VaryUFData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/varyuf/VaryUFModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/varyuf/VaryUFView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HV.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HVData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HVModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HVView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/Idle.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/ikas/IKAS.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/ikas/IKASData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/ikas/IKASModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/ikas/IKASView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/kz/KZ.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/kz/KZData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/kz/KZModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/kz/KZView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mgr/MGR.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mgr/MGRData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mgr/MGRModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mgr/MGRView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mvz/MVZ.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mvz/MVZData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mvz/MVZModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mvz/MVZView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/utils/CallbackTimer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/utils/Extensions.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/utils/ThinningBlob.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/utils/Utils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/error.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/Adderley Bold.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/Astroneer.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/CleanWork.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/DS Crystal.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/DS-Digital.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/DSEG7Modern-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/DSEG7Modern-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/EyeChart.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/GolosText.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/LCDNova.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/Noto Sans.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/OPTIBlast.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/font/Typesauce.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/info.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/common.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/hv.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/idle.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/ikas.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/incn.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/kz.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/load.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/maxm.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/mgr.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/minm.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/mvz.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/overi.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/overm.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/startmi.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reports/varyuf.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/splash.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/warning.png" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="rostov" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin File" />
+        <option value="Kotlin Script" />
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Object" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/editor/TestItemEditorTab.kt" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1p0jl9ORF4Zos4MfWKm5ePHaBFM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="abbreviatePackageNames" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "C:/p/k/rostov",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\p\k\rostov" />
+      <recent name="C:\p\k\rostov\src\main\kotlin\ru\avem\stand\modules\r\tests\debug" />
+      <recent name="C:\p\k\rostov\src\main\resources\reports" />
+      <recent name="C:\p\k\genborg400\src\main\resources\reports" />
+      <recent name="C:\p\k\ryazanb\src\main\resources\reports" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\p\k\rostov\src\main\resources\reports" />
+    </key>
+    <key name="CreateKotlinClassDialog.RecentsKey">
+      <recent name="ru.avem.stand.modules.i" />
+      <recent name="ru.avem.stand.modules.i.tests" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="ru.avem.stand.modules.r.tests" />
+      <recent name="ru.avem.stand.storage" />
+      <recent name="ru.avem.stand.modules.i.views" />
+      <recent name="ru.avem.stand.communication.model.devices.delta.c2000" />
+      <recent name="ru.avem.stand.communication.model.devices.instek.gpt" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="ru.avem.stand.modules.i.views" />
+      <recent name="ru.avem.stand.modules.r.tests" />
+      <recent name="ru.avem.stand.modules.r.tests.mgr" />
+      <recent name="ru.avem.stand.modules.r.tests.idle" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.[assemble]">
+    <configuration name="[assemble]" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="assemble" />
+          </list>
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="[run]" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="run" />
+          </list>
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.[assemble]" />
+      <item itemvalue="Gradle.[run]" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="50ac2102-2cc5-4e56-bd64-edd1d8d16ede" name="Default Changelist" comment="" />
+      <created>1621546090790</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1621546090790</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="GradleRunConfiguration">
+        <watch expression="IKASModel.status" language="kotlin" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
