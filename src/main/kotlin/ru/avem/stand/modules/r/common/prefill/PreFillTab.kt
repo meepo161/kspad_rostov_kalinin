@@ -75,9 +75,13 @@ class PreFillTab : View("Испытания") {
                     }
                     selectUnselectButton = button("Выбрать все") {
                         minWidth = 150.0
+                        prefWidth = 150.0
                         maxWidth = 150.0
+                        minHeight = 150.0
+                        prefHeight = 150.0
+                        maxHeight = 150.0
                         graphic = MaterialDesignIconView(MaterialDesignIcon.CHECK).apply {
-                            glyphSize = 65
+                            glyphSize = 45
                             fill = c("black")
                         }
                         contentDisplay = ContentDisplay.TOP
@@ -85,7 +89,7 @@ class PreFillTab : View("Испытания") {
                         action {
                             controller.toggleAllTests(selectUnselectButton.text)
                         }
-                    }
+                    }.addClass(Styles.toggleButtons)
                 }
 
                 testsList = listview {
@@ -127,7 +131,11 @@ class PreFillTab : View("Испытания") {
 //            }
             button("Начать испытания") {
                 minWidth = 150.0
+                prefWidth = 150.0
                 maxWidth = 150.0
+                minHeight = 150.0
+                prefHeight = 150.0
+                maxHeight = 150.0
                 isDefaultButton = true
                 graphic = MaterialDesignIconView(MaterialDesignIcon.PLAY).apply {
                     glyphSize = 65

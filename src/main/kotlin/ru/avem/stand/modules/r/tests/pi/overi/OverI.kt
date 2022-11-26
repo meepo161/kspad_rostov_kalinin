@@ -7,8 +7,6 @@ import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.th01.TH01Model
-import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202
-import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
 import ru.avem.stand.modules.r.communication.model.devices.satec.pm130.PM130Model
 import ru.avem.stand.modules.r.communication.model.devices.tilkom.T42Model
 import ru.avem.stand.modules.r.tests.AmperageStage
@@ -214,9 +212,9 @@ class OverI : KSPADTest(view = OverIView::class, reportTemplate = "overi.xlsx") 
         storeTestValues()
         if (isRunning) {
             if (isFirstPlatform) {
-                CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP1()
+                CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
             } else {
-                CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP2()
+                CM.device<PR>(CM.DeviceID.DD2).offGround()
             }
             returnAmperageStage()
             stopFI(CM.device(CM.DeviceID.UZ91))
@@ -256,16 +254,16 @@ class OverI : KSPADTest(view = OverIView::class, reportTemplate = "overi.xlsx") 
         CM.device<PR>(CM.DeviceID.DD2).onStart()
         sleep(200)
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         sleep(200)
-        CM.device<PR>(CM.DeviceID.DD2).fromFI()
+//        CM.device<PR>(CM.DeviceID.DD2).fromFI()
         sleep(200)
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP1()
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP1()
+            CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
+            CM.device<PR>(CM.DeviceID.DD2).onU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP2()
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP2()
+            CM.device<PR>(CM.DeviceID.DD2).onGround()
+            CM.device<PR>(CM.DeviceID.DD2).onVD()
         }
         sleep(200)
     }
@@ -424,14 +422,14 @@ class OverI : KSPADTest(view = OverIView::class, reportTemplate = "overi.xlsx") 
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
         if (isRunning && testModel.measuredI < 30) {
             appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
-            CM.device<PR>(CM.DeviceID.DD2).on30To5AmperageStage()
+            CM.device<PR>(CM.DeviceID.DD2).on100To5AmperageStage()
             CM.device<PR>(CM.DeviceID.DD2).offMaxAmperageStage()
-            testModel.amperageStage = AmperageStage.FROM_30_TO_5
+            testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
             if (isRunning && testModel.measuredI < 4) {
                 appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
                 CM.device<PR>(CM.DeviceID.DD2).onMinAmperageStage()
-                CM.device<PR>(CM.DeviceID.DD2).off30To5AmperageStage()
+                CM.device<PR>(CM.DeviceID.DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_5_TO_5
             }
         }
@@ -466,7 +464,7 @@ class OverI : KSPADTest(view = OverIView::class, reportTemplate = "overi.xlsx") 
     private fun returnAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Возврат токовой ступени...")
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         CM.device<PR>(CM.DeviceID.DD2).offOtherAmperageStages()
     }
 

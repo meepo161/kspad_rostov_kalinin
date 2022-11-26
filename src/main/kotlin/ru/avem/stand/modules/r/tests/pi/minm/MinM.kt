@@ -179,9 +179,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         }
         if (isRunning) {
             if (isFirstPlatform) {
-                CM.device<PR>(CM.DeviceID.DD2).offTestItemP1()
+                CM.device<PR>(CM.DeviceID.DD2).offU()
             } else {
-                CM.device<PR>(CM.DeviceID.DD2).offTestItemP2()
+                CM.device<PR>(CM.DeviceID.DD2).offVD()
             }
             stopFI(CM.device(CM.DeviceID.UZ92))
         }
@@ -210,9 +210,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         CM.device<PR>(CM.DeviceID.DD2).onStart()
         sleep(200)
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         sleep(200)
-        CM.device<PR>(CM.DeviceID.DD2).fromFI()
+//        CM.device<PR>(CM.DeviceID.DD2).fromFI()
         sleep(200)
     }
 
@@ -231,9 +231,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         appendMessageToLog(LogTag.INFO, "Проверка направления вращения НМ...")
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP1()
+            CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP2()
+            CM.device<PR>(CM.DeviceID.DD2).onGround()
         }
 
         CM.device<C2000>(CM.DeviceID.UZ92).setObjectParams(
@@ -250,9 +250,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         stopFI(CM.device(CM.DeviceID.UZ92))
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP1()
+            CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP2()
+            CM.device<PR>(CM.DeviceID.DD2).offGround()
         }
     }
 
@@ -260,9 +260,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         appendMessageToLog(LogTag.INFO, "Проверка направления вращения ОИ...")
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP1()
+            CM.device<PR>(CM.DeviceID.DD2).onU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP2()
+            CM.device<PR>(CM.DeviceID.DD2).onVD()
         }
 
         CM.device<C2000>(CM.DeviceID.UZ91).setObjectParams(
@@ -279,9 +279,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         stopFI(CM.device(CM.DeviceID.UZ91))
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).offTestItemP1()
+            CM.device<PR>(CM.DeviceID.DD2).offU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).offTestItemP2()
+            CM.device<PR>(CM.DeviceID.DD2).offVD()
         }
     }
 
@@ -341,9 +341,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         testModel.measuredTorqueMax = -1.0
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP1()
+            CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP2()
+            CM.device<PR>(CM.DeviceID.DD2).onGround()
         }
         CM.device<C2000>(CM.DeviceID.UZ92).setObjectParams(
             fOut = 50,
@@ -367,9 +367,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
             startTIFI()
 
             if (isFirstPlatform) {
-                CM.device<PR>(CM.DeviceID.DD2).onTestItemP1()
+                CM.device<PR>(CM.DeviceID.DD2).onU()
             } else {
-                CM.device<PR>(CM.DeviceID.DD2).onTestItemP2()
+                CM.device<PR>(CM.DeviceID.DD2).onVD()
             }
         }
 
@@ -387,9 +387,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         }
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).offTestItemP1()
+            CM.device<PR>(CM.DeviceID.DD2).offU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).offTestItemP2()
+            CM.device<PR>(CM.DeviceID.DD2).offVD()
         }
 
         stopFI(CM.device(CM.DeviceID.UZ91))
@@ -397,9 +397,9 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         stopFI(CM.device(CM.DeviceID.UZ92))
 
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP1()
+            CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP2()
+            CM.device<PR>(CM.DeviceID.DD2).offGround()
         }
     }
 

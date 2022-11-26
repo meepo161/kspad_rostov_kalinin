@@ -1,8 +1,10 @@
 package ru.avem.stand.modules.r.common.authorization
 
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.image.Image
 import javafx.scene.layout.*
+import javafx.scene.paint.ImagePattern
 import javafx.scene.text.FontWeight
 import ru.avem.stand.modules.i.views.Styles
 import ru.avem.stand.modules.i.views.ViewModule
@@ -28,18 +30,9 @@ class AuthorizationView(title: String = "Авторизация") : ViewModule(t
         prefWidth = Properties.standData.width
         prefHeight = Properties.standData.height
 
-        background = Background(
-            BackgroundImage(
-                Image("background.png"),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                BackgroundSize(
-                    BackgroundSize.AUTO, BackgroundSize.AUTO,
-                    true, true, true, false
-                )
-            )
-        )
+        val image = Image("translucent-background-kalinin.png")
+        val backgroundFill = BackgroundFill(ImagePattern(image), CornerRadii.EMPTY, Insets.EMPTY)
+        background = Background(backgroundFill)
 
         vbox(spacing = 32.0) {
             anchorpaneConstraints {

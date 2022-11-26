@@ -43,16 +43,17 @@ object TFXViewManager {
 
             mainBackground = Background(
                 BackgroundImage(
-                    Image("background.png"),
+                    Image("translucent-background-kalinin.png"),
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundPosition.CENTER,
                     BackgroundSize(
                         BackgroundSize.AUTO, BackgroundSize.AUTO,
-                        true, true, true, false
+                        false, false, true, false
                     )
                 )
             )
+
         }
     }
 

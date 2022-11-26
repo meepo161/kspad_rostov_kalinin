@@ -37,6 +37,7 @@ class PRModel : IDeviceModel {
         const val DO_17_32_ERROR_S1_MASK_1 = "DO_17_32_ERROR_S1_MASK_1"
 
         const val AI_01_F = "AI_01_F"
+        const val AI_02_F = "AI_02_F"
         const val AO_01_F = "AO_01_F"
     }
 
@@ -73,6 +74,7 @@ class PRModel : IDeviceModel {
         DO_17_32_ERROR_S1_MASK_1 to DeviceRegister(555, DeviceRegister.RegisterValueType.SHORT),
 
         AI_01_F to DeviceRegister(531, DeviceRegister.RegisterValueType.FLOAT), // CDAB
+        AI_02_F to DeviceRegister(533, DeviceRegister.RegisterValueType.FLOAT), // CDAB
         AO_01_F to DeviceRegister(539, DeviceRegister.RegisterValueType.FLOAT), // CDAB
     )
 

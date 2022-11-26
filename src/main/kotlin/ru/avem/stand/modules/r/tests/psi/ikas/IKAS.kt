@@ -4,8 +4,8 @@ import ru.avem.stand.modules.i.tests.LogTag
 import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
-import ru.avem.stand.modules.r.communication.model.devices.avem.ikas.IKAS8
-import ru.avem.stand.modules.r.communication.model.devices.avem.ikas.IKAS8Model
+import ru.avem.stand.modules.r.communication.model.devices.avem.ikas10.IKAS10
+import ru.avem.stand.modules.r.communication.model.devices.avem.ikas10.IKAS10Model
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
@@ -37,7 +37,7 @@ class IKAS : KSPADTest(view = IKASView::class, reportTemplate = "ikas.xlsx") {
         testModel.specifiedScheme = PreFillModel.testTypeProp.value.fields["SCHEME"]?.value ?: "λ"
 
         testModel.specifiedR = PreFillModel.testTypeProp.value.fields["R_IKAS"]?.value.toDoubleOrDefault(0.0)
-        testModel.specifiedRtK = PreFillModel.testTypeProp.value.fields["RT_K_IKAS"]?.value.toDoubleOrDefault( 0.00393)
+        testModel.specifiedRtK = PreFillModel.testTypeProp.value.fields["RT_K_IKAS"]?.value.toDoubleOrDefault(0.00393)
     }
 
     override fun initView() {
@@ -70,10 +70,10 @@ class IKAS : KSPADTest(view = IKASView::class, reportTemplate = "ikas.xlsx") {
         if (isRunning) {
             with(PR61) {
                 addCheckableDevice(this)
-                CM.startPoll(this, IKAS8Model.STATUS) { value ->
+                CM.startPoll(this, IKAS10Model.STATUS) { value ->
                     testModel.status = value.toInt()
                 }
-                CM.startPoll(this, IKAS8Model.RESIST_MEAS) { value ->
+                CM.startPoll(this, IKAS10Model.RESIST_MEAS) { value ->
                     testModel.measuredR = value.toDouble()
                 }
             }
@@ -107,18 +107,14 @@ class IKAS : KSPADTest(view = IKASView::class, reportTemplate = "ikas.xlsx") {
 
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
-        if (isFirstPlatform) {
-            CM.device<PR>(DD2).onIKASP1()
-        } else {
-            CM.device<PR>(DD2).onIKASP2()
-        }
+        CM.device<PR>(DD2).onIKAS()
     }
 
     private fun startMeasuring() {
         appendMessageToLog(LogTag.INFO, "Начало измерения...")
 
         if (isRunning) {
-            CM.device<IKAS8>(PR61).startMeasuringAB()
+            CM.device<IKAS10>(PR61).startMeasuringAB()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -130,7 +126,7 @@ class IKAS : KSPADTest(view = IKASView::class, reportTemplate = "ikas.xlsx") {
         }
 
         if (isRunning) {
-            CM.device<IKAS8>(PR61).startMeasuringBC()
+            CM.device<IKAS10>(PR61).startMeasuringBC()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -142,7 +138,7 @@ class IKAS : KSPADTest(view = IKASView::class, reportTemplate = "ikas.xlsx") {
         }
 
         if (isRunning) {
-            CM.device<IKAS8>(PR61).startMeasuringCA()
+            CM.device<IKAS10>(PR61).startMeasuringCA()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -216,18 +212,21 @@ class IKAS : KSPADTest(view = IKASView::class, reportTemplate = "ikas.xlsx") {
                 appendMessageToLog(LogTag.ERROR, "Испытание прервано по причине: $cause")
                 testModel.measuredData.result.value = "Прервано"
             }
+
             testModel.measuredData.R1.value == "Обрыв" ||
                     testModel.measuredData.R2.value == "Обрыв" ||
                     testModel.measuredData.R3.value == "Обрыв" -> {
                 appendMessageToLog(LogTag.ERROR, "Обрыв")
                 testModel.measuredData.result.value = "Обрыв"
             }
+
             testModel.percentData.R1.value.toDouble() > 2.0 ||
                     testModel.percentData.R2.value.toDouble() > 2.0 ||
                     testModel.percentData.R3.value.toDouble() > 2.0 -> {
                 appendMessageToLog(LogTag.ERROR, "Не соответствует. Отклонение превышает 2%")
                 testModel.measuredData.result.value = "Не соответствует"
             }
+
             else -> {
                 appendMessageToLog(LogTag.INFO, "Испытание завершено успешно")
                 testModel.measuredData.result.value = "Соответствует"

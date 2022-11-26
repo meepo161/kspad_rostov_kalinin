@@ -3,10 +3,12 @@ package ru.avem.stand.modules.i.views
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView
 import javafx.event.EventTarget
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import javafx.scene.layout.Priority
-import javafx.scene.layout.VBox
+import javafx.scene.image.Image
+import javafx.scene.layout.*
+import javafx.scene.paint.ImagePattern
 import javafx.scene.text.TextAlignment
 import ru.avem.stand.modules.i.tests.Test
 import ru.avem.stand.modules.r.common.prefill.isCancelAllTests
@@ -40,7 +42,9 @@ abstract class TestViewModule(title: String, showOnStart: Boolean = false) : Vie
         injectTest()
         padding = insets(16)
 
-        background = TFXViewManager.mainBackground
+        val image = Image("translucent-background-kalinin.png")
+        val backgroundFill = BackgroundFill(ImagePattern(image), CornerRadii.EMPTY, Insets.EMPTY)
+        background = Background(backgroundFill)
 
         label(test.name) {
             alignment = Pos.CENTER
@@ -218,34 +222,23 @@ abstract class TestViewModule(title: String, showOnStart: Boolean = false) : Vie
                 alignment = Pos.CENTER
                 minWidth = 210.0
             }
-            tableview(observableList(test.testModel.protections.overcurrentTI)) {
+            tableview(observableList(test.testModel.protections.overCurrentOI)) {
                 minHeight = 64.0
                 maxHeight = 64.0
                 columnResizePolicy = SmartResize.POLICY
                 mouseTransparentProperty().set(true)
-                column("Токовая ОИ", Protection::prop.getter).cellFormat { // TODO привязать к Protection
+                column("Токовая ОИ", Protection::prop.getter).cellFormat {
                     text = it
                     this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
                     this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
                 }
             }
-            tableview(observableList(test.testModel.protections.overcurrentHV)) {
+            tableview(observableList(test.testModel.protections.overCurrentVIU)) {
                 minHeight = 64.0
                 maxHeight = 64.0
                 columnResizePolicy = SmartResize.POLICY
                 mouseTransparentProperty().set(true)
                 column("Токовая ВИУ", Protection::prop.getter).cellFormat {
-                    text = it
-                    this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
-                    this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
-                }
-            }
-            tableview(observableList(test.testModel.protections.doorsPEC)) {
-                minHeight = 64.0
-                maxHeight = 64.0
-                columnResizePolicy = SmartResize.POLICY
-                mouseTransparentProperty().set(true)
-                column("Двери ШСО", Protection::prop.getter).cellFormat {
                     text = it
                     this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
                     this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
@@ -260,47 +253,15 @@ abstract class TestViewModule(title: String, showOnStart: Boolean = false) : Vie
                     text = it
                     this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
                     this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
+                    this.tableRow.toggleClass(Styles.blueText, it == "НЕИЗВЕСТНО")
                 }
             }
-            tableview(observableList(test.testModel.protections.overheatingChokes)) {
+            tableview(observableList(test.testModel.protections.doorsSHSO)) {
                 minHeight = 64.0
                 maxHeight = 64.0
                 columnResizePolicy = SmartResize.POLICY
                 mouseTransparentProperty().set(true)
-                column("Перегрев дросселей", Protection::prop.getter).cellFormat {
-                    text = it
-                    this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
-                    this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
-                }
-            }
-            tableview(observableList(test.testModel.protections.earthingSwitch)) {
-                minHeight = 64.0
-                maxHeight = 64.0
-                columnResizePolicy = SmartResize.POLICY
-                mouseTransparentProperty().set(true)
-                column("Заземлитель", Protection::prop.getter).cellFormat {
-                    text = it
-                    this.tableRow.toggleClass(Styles.earthingSwitchNotTriggered, it == "НА ЗЕМЛЕ")
-                    this.tableRow.toggleClass(Styles.earthingSwitchTriggered, it == "ВЫСОКОЕ НАПРЯЖЕНИЕ")
-                }
-            }
-            tableview(observableList(test.testModel.protections.overheatingLM1)) {
-                minHeight = 64.0
-                maxHeight = 64.0
-                columnResizePolicy = SmartResize.POLICY
-                mouseTransparentProperty().set(true)
-                column("Перегрев НМ-1", Protection::prop.getter).cellFormat {
-                    text = it
-                    this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
-                    this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
-                }
-            }
-            tableview(observableList(test.testModel.protections.overheatingLM2)) {
-                minHeight = 64.0
-                maxHeight = 64.0
-                columnResizePolicy = SmartResize.POLICY
-                mouseTransparentProperty().set(true)
-                column("Перегрев НМ-2", Protection::prop.getter).cellFormat {
+                column("Двери ШСО", Protection::prop.getter).cellFormat {
                     text = it
                     this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
                     this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")

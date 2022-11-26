@@ -4,12 +4,11 @@ import ru.avem.stand.modules.i.tests.LogTag
 import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
-import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
+import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
+import ru.avem.stand.modules.r.communication.model.devices.optimus.OptimusModel
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.th01.TH01Model
-import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
-import ru.avem.stand.modules.r.communication.model.devices.prosoftsystems.ivd3c.IVD3CModel
 import ru.avem.stand.modules.r.communication.model.devices.satec.pm130.PM130Model
 import ru.avem.stand.modules.r.tests.AmperageStage
 import ru.avem.stand.modules.r.tests.KSPADTest
@@ -27,6 +26,8 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
                 "Проверка уровня вибрации"
 
     override val testModel = IdleModel
+
+    var frequency = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -160,45 +161,65 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
             }
         }
 
-        if (isRunning) { // TODO если на поверке
-            with(PG31) {
-                addCheckableDevice(this)
-                CM.startPoll(this, IVD3CModel.MEAS_X) { value ->
-                    testModel.measuredData.v1x.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Y) { value ->
-                    testModel.measuredData.v1y.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Z) { value ->
-                    testModel.measuredData.v1z.value = value.toDouble().autoformat()
-                }
-            }
-        }
-
         if (isRunning) {
-            with(PG32) {
+            with(PS81) {
                 addCheckableDevice(this)
-                CM.startPoll(this, IVD3CModel.MEAS_X) { value ->
-                    testModel.measuredData.v2x.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Y) { value ->
-                    testModel.measuredData.v2y.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Z) { value ->
-                    testModel.measuredData.v2z.value = value.toDouble().autoformat()
-                }
-            }
-        }
 
-        if (isRunning) {
-            with(CM.device<TRM202>(PS81)) {
-                with(getRegisterById(TRM202Model.T_1)) {
-                    readRegister(this)
+                CM.startPoll(this, TRM202Model.T_1) { value ->
                     testModel.measuredData.tempAmb.value = value.toDouble().autoformat()
                 }
-                with(getRegisterById(TRM202Model.T_2)) {
-                    readRegister(this)
+                CM.startPoll(this, TRM202Model.T_2) { value ->
                     testModel.measuredData.tempTI.value = value.toDouble().autoformat()
+                }
+            }
+
+        }
+    }
+
+    private fun startPollFi() {
+        if (isRunning) {
+            with(UZ91) {
+                addCheckableDevice(this)
+                CM.startPoll(this, OptimusModel.CURRENT_FREQUENCY_REGISTER) { value ->
+                    testModel.measuredData.optimusF.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.CURRENT_VOLTAGE_REGISTER) { value ->
+                    testModel.measuredData.optimusU.value = (value.toDouble()).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.CURRENT_CURRENT_REGISTER) { value ->
+                    testModel.measuredData.optimusI.value = (value.toDouble() / 10).autoformat()
+                }
+
+                CM.startPoll(this, OptimusModel.VOLTAGE_1_REGISTER) { value ->
+                    testModel.measuredData.optimusV1.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_2_REGISTER) { value ->
+                    testModel.measuredData.optimusV2.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_3_REGISTER) { value ->
+                    testModel.measuredData.optimusV3.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_4_REGISTER) { value ->
+                    testModel.measuredData.optimusV4.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_5_REGISTER) { value ->
+                    testModel.measuredData.optimusV5.value = (value.toDouble() / 10).autoformat()
+                }
+
+                CM.startPoll(this, OptimusModel.FREQUENCY_1_REGISTER) { value ->
+                    testModel.measuredData.optimusF1.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_2_REGISTER) { value ->
+                    testModel.measuredData.optimusF2.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_3_REGISTER) { value ->
+                    testModel.measuredData.optimusF3.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_4_REGISTER) { value ->
+                    testModel.measuredData.optimusF4.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_5_REGISTER) { value ->
+                    testModel.measuredData.optimusF5.value = (value.toDouble() / 10).autoformat()
                 }
             }
         }
@@ -210,9 +231,42 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
         }
         if (isRunning) {
             waitUntilFIToLoad()
+            startPollFi()
             startFI()
+//            startVIUFI()
             waitUntilFIToRun()
+
+//            sleepWhileRun(10)
+//            with(UZ92) {
+//                addCheckableDevice(this)
+//
+//                CM.startPoll(this, HPMontModel.OUTPUT_FREQUENCY_REGISTER) { value ->
+//                    testModel.measuredData.optimusF.value = (value.toDouble() / 100).autoformat()
+//                }
+//                CM.startPoll(this, HPMontModel.OUTPUT_VOLTAGE_REGISTER) { value ->
+//                    testModel.measuredData.optimusU.value = (value.toDouble()).autoformat()
+//                }
+//                CM.startPoll(this, HPMontModel.OUTPUT_CURRENT_REGISTER) { value ->
+//                    testModel.measuredData.optimusI.value = (value.toDouble() / 100).autoformat()
+//                }
+//            }
+//
+//            CM.device<HPMont>(UZ92).setObjectParams()
+//            sleepWhileRun(3)
+//            CM.device<HPMont>(UZ92).setRunningFrequency(50.0)
+//            sleepWhileRun(3)
+//            CM.device<HPMont>(UZ92).startObject()
+//            sleepWhileRun(3)
+//            var voltage = 1.0
+//            while (voltage < 50.0 && isRunning) {
+//                voltage++
+//                sleep(100)
+//                CM.device<HPMont>(UZ92).setObjectU(voltage)
+//            }
+//            sleepWhileRun(100)
+//            CM.device<HPMont>(UZ92).stopObject()
         }
+
         if (isRunning) {
             selectAmperageStage()
         }
@@ -222,54 +276,101 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
         storeTestValues()
         if (isRunning) {
             returnAmperageStage()
-            stopFI(CM.device(UZ91))
         }
+//        stopVIUFi()
+//        stopFi()
+        CM.device<Optimus>(UZ91).stopObjectNaVibege()
+        sleep(3)
     }
 
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(DD2).onStart()
-        sleep(200)
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).onU()
+        sleepWhileRun(1)
         CM.device<PR>(DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
-        sleep(200)
-        CM.device<PR>(DD2).fromFI()
-        sleep(200)
-        if (isFirstPlatform) {
-            CM.device<PR>(DD2).onTestItemP1()
-        } else {
-            CM.device<PR>(DD2).onTestItemP2()
-        }
-        sleep(200)
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).onFromFI()
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
+        sleepWhileRun(1)
     }
 
     private fun startFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        CM.device<C2000>(UZ91).setObjectParams(
-            fOut = testModel.specifiedF,
+        CM.device<Optimus>(UZ91).setObjectParamsRun(380.0) //todo 220?
+        if (isRunning) {
+            frequency = 0.0
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).startObject()
+            sleepWhileRun(3)
+        }
+        while (frequency < 50.0 && isRunning) {
+            frequency += 0.1
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+    }
 
-            voltageP1 = testModel.specifiedU,
-            fP1 = testModel.specifiedF,
+    private fun startVIUFI() {
+        appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
+        CM.device<Optimus>(UZ91).setObjectParamsVIU()
+        sleepWhileRun(3)
 
-            voltageP2 = 1,
-            fP2 = 1
-        )
-        CM.device<C2000>(UZ91).startObject()
+        if (isRunning) {
+            CM.device<Optimus>(UZ91).setObjectFCur(50.0)
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).startObject()
+            sleepWhileRun(3)
+        }
+
+        var voltage = 3.0
+        while (voltage < 220 && isRunning) { //todo setVoltage
+            voltage += 1
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectUMax(voltage)
+        }
+    }
+
+    private fun waitUntilFIToRun() {
+        while (frequency < 50.0 && isRunning) {
+            sleep(10)
+        }
+    }
+
+    private fun stopVIUFi() {
+        appendMessageToLog(LogTag.INFO, "Остановка ЧП...")
+        while (frequency > 49.4) {
+            frequency -= 0.1
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+        CM.device<Optimus>(UZ91).stopObject()
+        sleep(2000)
     }
 
     private fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
-        if (isRunning && testModel.measuredI < 30) {
-            appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
-            CM.device<PR>(DD2).on30To5AmperageStage()
+        if (isRunning && testModel.measuredI < 100) {
+            appendMessageToLog(LogTag.INFO, "Переключение на 100/5")
+            CM.device<PR>(DD2).on100To5AmperageStage()
             CM.device<PR>(DD2).offMaxAmperageStage()
-            testModel.amperageStage = AmperageStage.FROM_30_TO_5
+            testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
-            if (isRunning && testModel.measuredI < 4) {
-                appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-                CM.device<PR>(DD2).onMinAmperageStage()
-                CM.device<PR>(DD2).off30To5AmperageStage()
-                testModel.amperageStage = AmperageStage.FROM_5_TO_5
+            if (isRunning && testModel.measuredI < 30) {
+                appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+                CM.device<PR>(DD2).on30to5Amperage()
+                CM.device<PR>(DD2).off100To5AmperageStage()
+                testModel.amperageStage = AmperageStage.FROM_30_TO_5
+                sleepWhileRun(3)
+                if (isRunning && testModel.measuredI < 5) {
+                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+                    CM.device<PR>(DD2).onMinAmperageStage()
+                    CM.device<PR>(DD2).off30to5Amperage()
+                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                }
             }
         }
     }
@@ -312,9 +413,20 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
     private fun returnAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Возврат токовой ступени...")
         CM.device<PR>(DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         CM.device<PR>(DD2).offOtherAmperageStages()
     }
+
+    private fun stopFi() {
+        appendMessageToLog(LogTag.INFO, "Остановка ЧП...")
+        while (frequency >= 0.1) {
+            frequency -= 0.5
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+        CM.device<Optimus>(UZ91).stopObject()
+    }
+
 
     override fun result() {
         super.result()

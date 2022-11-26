@@ -4,7 +4,7 @@ import ru.avem.stand.modules.i.tests.LogTag
 import ru.avem.stand.modules.i.views.showTwoWayDialog
 import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
-import ru.avem.stand.modules.r.communication.model.devices.avem.ikas.IKAS8
+import ru.avem.stand.modules.r.communication.model.devices.avem.ikas10.IKAS10
 import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.th01.TH01Model
@@ -205,36 +205,6 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
             }
         }
 
-        if (isRunning) { // TODO если на поверке
-            with(CM.DeviceID.PG31) {
-                addCheckableDevice(this)
-                CM.startPoll(this, IVD3CModel.MEAS_X) { value ->
-                    testModel.measuredData.v1x.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Y) { value ->
-                    testModel.measuredData.v1y.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Z) { value ->
-                    testModel.measuredData.v1z.value = value.toDouble().autoformat()
-                }
-            }
-        }
-
-        if (isRunning) {
-            with(CM.DeviceID.PG32) {
-                addCheckableDevice(this)
-                CM.startPoll(this, IVD3CModel.MEAS_X) { value ->
-                    testModel.measuredData.v2x.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Y) { value ->
-                    testModel.measuredData.v2y.value = value.toDouble().autoformat()
-                }
-                CM.startPoll(this, IVD3CModel.MEAS_Z) { value ->
-                    testModel.measuredData.v2z.value = value.toDouble().autoformat()
-                }
-            }
-        }
-
         if (isRunning) {
             with(CM.DeviceID.PS81) {
                 addCheckableDevice(this)
@@ -288,9 +258,9 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         storeTestValues()
         if (isRunning) {
             if (isFirstPlatform) {
-                CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP1()
+                CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
             } else {
-                CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP2()
+                CM.device<PR>(CM.DeviceID.DD2).offGround()
             }
             returnAmperageStage()
             stopFI(CM.device(CM.DeviceID.UZ91))
@@ -304,7 +274,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         appendMessageToLog(LogTag.INFO, "Измерение активного сопротивления...")
 
         if (isRunning) {
-            CM.device<IKAS8>(CM.DeviceID.PR61).startMeasuringAB()
+            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -316,7 +286,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         }
 
         if (isRunning) {
-            CM.device<IKAS8>(CM.DeviceID.PR61).startMeasuringBC()
+            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringBC()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -328,7 +298,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         }
 
         if (isRunning) {
-            CM.device<IKAS8>(CM.DeviceID.PR61).startMeasuringCA()
+            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringCA()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -385,16 +355,16 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         CM.device<PR>(CM.DeviceID.DD2).onStart()
         sleep(200)
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         sleep(200)
-        CM.device<PR>(CM.DeviceID.DD2).fromFI()
+//        CM.device<PR>(CM.DeviceID.DD2).fromFI()
         sleep(200)
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP1()
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP1()
+            CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
+            CM.device<PR>(CM.DeviceID.DD2).onU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP2()
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP2()
+            CM.device<PR>(CM.DeviceID.DD2).onGround()
+            CM.device<PR>(CM.DeviceID.DD2).onVD()
         }
         sleep(200)
     }
@@ -556,14 +526,14 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
         if (isRunning && testModel.measuredI < 30) {
             appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
-            CM.device<PR>(CM.DeviceID.DD2).on30To5AmperageStage()
+            CM.device<PR>(CM.DeviceID.DD2).on100To5AmperageStage()
             CM.device<PR>(CM.DeviceID.DD2).offMaxAmperageStage()
-            testModel.amperageStage = AmperageStage.FROM_30_TO_5
+            testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
             if (isRunning && testModel.measuredI < 4) {
                 appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
                 CM.device<PR>(CM.DeviceID.DD2).onMinAmperageStage()
-                CM.device<PR>(CM.DeviceID.DD2).off30To5AmperageStage()
+                CM.device<PR>(CM.DeviceID.DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_5_TO_5
             }
         }
@@ -599,7 +569,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         appendMessageToLog(LogTag.INFO, "Измерение активного сопротивления...")
 
         if (isRunning) {
-            CM.device<IKAS8>(CM.DeviceID.PR61).startMeasuringAB()
+            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -611,7 +581,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         }
 
         if (isRunning) {
-            CM.device<IKAS8>(CM.DeviceID.PR61).startMeasuringAB()
+            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -625,7 +595,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         sleepWhileRun(10)
 
         if (isRunning) {
-            CM.device<IKAS8>(CM.DeviceID.PR61).startMeasuringAB()
+            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
             while (isRunning && testModel.status != 0 && testModel.status != 101) {
                 sleep(100)
             }
@@ -700,7 +670,7 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
     private fun returnAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Возврат токовой ступени...")
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         CM.device<PR>(CM.DeviceID.DD2).offOtherAmperageStages()
     }
 

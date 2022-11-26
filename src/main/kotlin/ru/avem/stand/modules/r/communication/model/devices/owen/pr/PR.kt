@@ -24,7 +24,6 @@ class PR(
     override val writingRegisters = mutableListOf<Pair<DeviceRegister, Number>>()
 
     private var outMask01To16: Short = 0
-    private var outMask17To32: Short = 0
 
     fun init() {
         writeRegister(getRegisterById(PRModel.WD_TIMEOUT), 8000.toShort())
@@ -105,11 +104,13 @@ class PR(
                         protocolAdapter.presetMultipleRegisters(id, register.address, registers)
                     }
                 }
+
                 is Short -> {
                     transactionWithAttempts {
                         protocolAdapter.presetMultipleRegisters(id, register.address, listOf(ModbusRegister(value)))
                     }
                 }
+
                 else -> {
                     throw UnsupportedOperationException("Method can handle only with Float and Short")
                 }
@@ -144,8 +145,16 @@ class PR(
         onOutput01To16(1)
     }
 
-    fun fromFI() {
+    fun offStart() {
+        offOutput01To16(1)
+    }
+
+    fun onFromFI() {
         onOutput01To16(2)
+    }
+
+    fun OffFromFI() {
+        offOutput01To16(2)
     }
 
     fun onMaxAmperageStage() {
@@ -164,135 +173,103 @@ class PR(
         offOutput01To16(4)
     }
 
-    fun onIKASP1() {
+    fun onIKAS() {
         onOutput01To16(5)
     }
 
-    fun onTestItemP1() {
+    fun offIKAS() {
+        offOutput01To16(5)
+    }
+
+    fun onU() {
         onOutput01To16(6)
     }
 
-    fun offTestItemP1() {
+    fun offU() {
         offOutput01To16(6)
     }
 
-    fun connectTI1() {
-        onOutput01To16(7)
-    }
-
     fun signalize() {
+        onOutput01To16(7)
         onOutput01To16(8)
         sleep(3000)
         offOutput01To16(8)
-        onOutput01To16(7)
     }
 
-    fun onTVHV() {
+    fun onVIU() {
         onOutput01To16(9)
     }
 
-    fun offTVHV() {
+    fun offVIU() {
         offOutput01To16(9)
     }
 
-    fun on30To5AmperageStage() {
+    fun on100To5AmperageStage() {
         onOutput01To16(10)
     }
 
-    fun off30To5AmperageStage() {
+    fun off100To5AmperageStage() {
         offOutput01To16(10)
     }
 
-    fun onLoadMachineP1() {
+    fun onShuntViu() {
         onOutput01To16(11)
     }
 
-    fun offLoadMachineP1() {
+    fun offShuntViu() {
         offOutput01To16(11)
     }
 
-    fun onVoltageBoost() {
+    fun onKTR() {
         onOutput01To16(12)
     }
 
-    fun onAVR() {
+    fun offKTR() {
+        offOutput01To16(12)
+    }
+
+
+    fun onVD() {
         onOutput01To16(13)
     }
 
-    fun onTestItemP2() {
+    fun offVD() {
+        offOutput01To16(13)
+    }
+
+    fun on30to5Amperage() {
         onOutput01To16(14)
     }
 
-    fun offTestItemP2() {
+    fun off30to5Amperage() {
         offOutput01To16(14)
     }
 
-    fun onMVZ() {
+    fun onGround() {
         onOutput01To16(15)
     }
 
-    fun onLoadMachineP2() {
-        onOutput01To16(16)
-    }
-
-    fun offLoadMachineP2() {
-        offOutput01To16(16)
-    }
-
-    fun onIKASP2() {
-        onOutput17To32(1)
-    }
-
-    fun onMPT() {
-        onOutput17To32(2)
-    }
-
-    fun onMeasuringAVEM() {
-        onOutput17To32(4)
-    }
-
-    fun onShunting() {
-        onOutput17To32(5)
-    }
-
-    fun offShunting() {
-        offOutput17To32(5)
-    }
-
-    fun onHV() {
-        onOutput17To32(6)
-    }
-
-    fun offHV() {
-        offOutput17To32(6)
+    fun offGround() {
+        offOutput01To16(15)
     }
 
     fun onMGR() {
-        onOutput17To32(7)
+        onOutput01To16(16)
     }
 
     fun offMGR() {
-        offOutput17To32(7)
-    }
-
-    fun onPE() {
-        onOutput17To32(8)
-    }
-
-    fun offPE() {
-        offOutput17To32(8)
+        offOutput01To16(16)
     }
 
     fun offOtherAmperageStages() {
-        off30To5AmperageStage()
         offMinAmperageStage()
+        off30to5Amperage()
+        off100To5AmperageStage()
     }
 
     fun offAllKMs() {
         outMask01To16 = 0
-        outMask17To32 = 0
         writeRegister(getRegisterById(PRModel.DO_01_16), outMask01To16)
-        writeRegister(getRegisterById(PRModel.DO_17_32), outMask17To32)
     }
 
     private fun onOutput01To16(position: Short) {
@@ -305,17 +282,5 @@ class PR(
         val bitPosition = position - 1
         outMask01To16 = outMask01To16 and 2.0.pow(bitPosition).toInt().inv().toShort()
         writeRegister(getRegisterById(PRModel.DO_01_16), outMask01To16)
-    }
-
-    private fun onOutput17To32(position: Short) {
-        val bitPosition = position - 1
-        outMask17To32 = outMask17To32 or 2.0.pow(bitPosition).toInt().toShort()
-        writeRegister(getRegisterById(PRModel.DO_17_32), outMask17To32)
-    }
-
-    private fun offOutput17To32(position: Short) {
-        val bitPosition = position - 1
-        outMask17To32 = outMask17To32 and 2.0.pow(bitPosition).toInt().inv().toShort()
-        writeRegister(getRegisterById(PRModel.DO_17_32), outMask17To32)
     }
 }

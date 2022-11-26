@@ -111,26 +111,26 @@ class HV : KSPADTest(view = HVView::class, reportTemplate = "hv.xlsx") {
         storeTestValues()
 
         stopFI(CM.device(UZ91))
-        CM.device<PR>(DD2).offHV()
+//        CM.device<PR>(DD2).offHV()
         sleep(200)
-        CM.device<PR>(DD2).offTVHV()
+        CM.device<PR>(DD2).offVIU()
         sleep(200)
-        CM.device<PR>(DD2).offPE()
+//        CM.device<PR>(DD2).offPE()
     }
 
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(DD2).onStart()
         sleep(200)
-        CM.device<PR>(DD2).onShunting()
+//        CM.device<PR>(DD2).onShunting()
         sleep(200)
-        CM.device<PR>(DD2).onPE()
+//        CM.device<PR>(DD2).onPE()
         sleep(200)
-        CM.device<PR>(DD2).onTVHV()
+        CM.device<PR>(DD2).onVIU()
         sleep(200)
-        CM.device<PR>(DD2).onHV()
+//        CM.device<PR>(DD2).onHV()
         sleep(200)
-        CM.device<PR>(DD2).offShunting()
+//        CM.device<PR>(DD2).offShunting()
     }
 
     private fun startFI() {

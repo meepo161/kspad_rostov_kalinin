@@ -1,6 +1,7 @@
 package ru.avem.stand.modules.i.views
 
 import javafx.geometry.Pos
+import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Paint
 import javafx.scene.text.FontWeight
 import ru.avem.stand.modules.r.storage.Properties
@@ -24,6 +25,7 @@ class Styles : Stylesheet() {
         val pressure by cssclass()
         val redText by cssclass()
         val greenText by cssclass()
+        val blueText by cssclass()
         val earthingSwitchNotTriggered by cssclass()
         val earthingSwitchTriggered by cssclass()
         val medium by cssclass()
@@ -35,6 +37,7 @@ class Styles : Stylesheet() {
         val anchorPaneStatusColor by cssclass()
         val roundButton by cssclass()
         val powerButtons by cssclass()
+        val toggleButtons by cssclass()
         val kVArPowerButtons by cssclass()
         val tableRowCell by cssclass()
         val vboxTextArea by cssclass()
@@ -187,6 +190,10 @@ class Styles : Stylesheet() {
             baseColor = c("#00FF00")
         }
 
+        blueText {
+            baseColor = c("#0000FF")
+        }
+
         earthingSwitchNotTriggered {
             baseColor = c(168, 168, 168)
         }
@@ -225,6 +232,11 @@ class Styles : Stylesheet() {
             fontSize = 18.px
 //            baseColor = c("#2178CC")
             baseColor = c("#222")
+            prefWidth = 50.px
+        }
+
+        toggleButtons {
+            fontSize = 18.px
             prefWidth = 50.px
         }
 

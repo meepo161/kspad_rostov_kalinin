@@ -202,14 +202,14 @@ class StartMI : KSPADTest(view = StartMIView::class, reportTemplate = "startmi.x
         CM.device<PR>(DD2).onStart()
         sleep(200)
         CM.device<PR>(DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         sleep(200)
-        CM.device<PR>(DD2).fromFI()
+//        CM.device<PR>(DD2).fromFI()
         sleep(200)
         if (isFirstPlatform) {
-            CM.device<PR>(DD2).onTestItemP1()
+            CM.device<PR>(DD2).onU()
         } else {
-            CM.device<PR>(DD2).onTestItemP2()
+            CM.device<PR>(DD2).onVD()
         }
         sleep(200)
     }

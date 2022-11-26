@@ -7,6 +7,7 @@ import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.DD2
 import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
+import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PRModel
 import tornadofx.*
@@ -48,55 +49,34 @@ abstract class KSPADTest(
             PRModel.CMD,
             1.toShort()
         )
-        CM.device<PR>(DD2).init()
+        CM.device<PR>(DD2).initWithoutProtections()
     }
 
     fun startPollControlUnit() {
         if (isRunning) {
+            CM.startPoll(DD2, PRModel.STATE) {}
             CM.startPoll(DD2, PRModel.DI_01_16_TRIG) { value ->
-                val isStopPressed = value.toShort() and 0b1 != 0.toShort()
+                val isStopPressed = value.toShort() and 0b1 != 0.toShort() // 1
                 if (isStopPressed) stop()
 
-                isStartPressed = value.toShort() and 0b10 != 0.toShort()
-
-                if (value.toShort() and 0b100000000 != 0.toShort()) {
-                    testModel.protections.earthingSwitch.reset()
-                }
-
-                if (value.toShort() and 0b1000000000 != 0.toShort()) {
-                    testModel.protections.earthingSwitch.set()
-                }
-
-                if (value.toShort() and 0b10000000000 != 0.toShort()) {
-                    cause = "сработала токовая защита НМ-1"
-                    testModel.protections.overheatingLM1.set()
-                }
-
-                if (value.toShort() and 0b100000000000 != 0.toShort()) {
-                    cause = "сработала токовая защита НМ-2"
-                    testModel.protections.overheatingLM2.set()
-                }
+                isStartPressed = value.toShort() and 0b10 != 0.toShort() // 2
             }
             CM.startPoll(DD2, PRModel.DI_01_16_TRIG_INV) { value ->
-                if (value.toShort() and 0b100 != 0.toShort()) {
-                    cause = "открыта дверь ШСО"
-                    testModel.protections.doorsPEC.set()
-                }
-                if (value.toShort() and 0b1000 != 0.toShort()) {
-                    cause = "сработала токовая защита ОИ"
-                    testModel.protections.overcurrentTI.set()
-                }
-                if (value.toShort() and 0b10000 != 0.toShort()) {
+                if (value.toShort() and 0b100 != 0.toShort()) { // 3
                     cause = "сработала токовая защита ВИУ"
-                    testModel.protections.overcurrentHV.set()
+                    testModel.protections.overCurrentVIU.set()
                 }
-                if (value.toShort() and 0b100000 != 0.toShort()) {
-                    cause = "открыта дверь зоны"
-                    testModel.protections.doorsZone.set()
+                if (value.toShort() and 0b10000 != 0.toShort()) { // 5
+                    cause = "сработала токовая защита ОИ"
+                    testModel.protections.overCurrentOI.set()
                 }
-                if (value.toShort() and 0b10000000 != 0.toShort()) {
-                    cause = "сработала тепловая защита дросселей"
-                    testModel.protections.overheatingChokes.set()
+                if (value.toShort() and 0b1000000 != 0.toShort()) { // 7
+                    cause = "открыты двери ШСО"
+                    testModel.protections.doorsSHSO.set()
+                }
+                if (value.toShort() and 0b10000000 != 0.toShort()) { // 8
+//                    cause = "открыты двери зоны"
+                    testModel.protections.doorsZone.unknown()
                 }
             }
         }
@@ -104,7 +84,7 @@ abstract class KSPADTest(
 
     override fun prepare() {
         if (isRunning) {
-            initPushButtonPost()
+           initPushButtonPost()
         }
         if (isRunning) {
             appendMessageToLog(LogTag.INFO, "Сигнализация")
@@ -137,7 +117,7 @@ abstract class KSPADTest(
 
     protected fun waitUntilFIToLoad() {
         appendMessageToLog(LogTag.INFO, "Загрузка ЧП...")
-        sleepWhileRun(8)
+        sleepWhileRun(12)
     }
 
     protected fun startFI(fi: C2000, accTime: Int = 10) {
@@ -146,7 +126,13 @@ abstract class KSPADTest(
         waitUntilFIToRun(accTime)
     }
 
-    protected fun waitUntilFIToRun(accTime: Int = 10) {
+    protected fun startOptimus(fi: Optimus, accTime: Int = 10) {
+        appendMessageToLog(LogTag.INFO, "Запуск ЧП...")
+        fi.startObject()
+        waitUntilFIToRun(accTime)
+    }
+
+    protected fun waitUntilFIToRun(accTime: Int = 15) {
         appendMessageToLog(LogTag.INFO, "Ожидание разгона...")
         sleepWhileRun(accTime)
     }
@@ -157,6 +143,11 @@ abstract class KSPADTest(
         waitUntilFIToStop(stopTime)
     }
 
+    protected fun stopOptimus(fi: Optimus, stopTime: Int = 7) {
+        appendMessageToLog(LogTag.INFO, "Останов...")
+        fi.stopObject()
+    }
+
     private fun waitUntilFIToStop(stopTime: Int = 7) {
         appendMessageToLog(LogTag.INFO, "Ожидание останова...")
         sleepWhileRun(stopTime)
@@ -165,7 +156,5 @@ abstract class KSPADTest(
     override fun finalizeDevices() {
         CM.device<PR>(DD2).offAllKMs()
         super.finalizeDevices()
-
-        testModel.protections.earthingSwitch.reset()
     }
 }

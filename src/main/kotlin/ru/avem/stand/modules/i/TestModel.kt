@@ -9,7 +9,7 @@ import ru.avem.stand.modules.r.tests.TestItemData
 abstract class TestModel {
     open val progressProperty: DoubleProperty = SimpleDoubleProperty()
 
-    var amperageStage = AmperageStage.FROM_150_TO_5
+    var amperageStage = AmperageStage.FROM_500_TO_5
 
     val testItemData = TestItemData()
     val protections = ProtectionsData()

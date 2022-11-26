@@ -206,9 +206,9 @@ class MaxM : KSPADTest(view = MaxMView::class, reportTemplate = "maxm.xlsx") {
         storeTestValues()
         if (isRunning) {
             if (isFirstPlatform) {
-                CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP1()
+                CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
             } else {
-                CM.device<PR>(CM.DeviceID.DD2).offLoadMachineP2()
+                CM.device<PR>(CM.DeviceID.DD2).offGround()
             }
             stopFI(CM.device(CM.DeviceID.UZ91))
         }
@@ -250,16 +250,16 @@ class MaxM : KSPADTest(view = MaxMView::class, reportTemplate = "maxm.xlsx") {
         CM.device<PR>(CM.DeviceID.DD2).onStart()
         sleep(200)
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         sleep(200)
-        CM.device<PR>(CM.DeviceID.DD2).fromFI()
+//        CM.device<PR>(CM.DeviceID.DD2).fromFI()
         sleep(200)
         if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP1()
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP1()
+            CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
+            CM.device<PR>(CM.DeviceID.DD2).onU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onLoadMachineP2()
-            CM.device<PR>(CM.DeviceID.DD2).onTestItemP2()
+            CM.device<PR>(CM.DeviceID.DD2).onGround()
+            CM.device<PR>(CM.DeviceID.DD2).onVD()
         }
         sleep(200)
     }

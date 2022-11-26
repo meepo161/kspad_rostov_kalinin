@@ -280,16 +280,16 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
         CM.device<PR>(DD2).onStart()
         sleep(200)
         CM.device<PR>(DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         sleep(200)
-        CM.device<PR>(DD2).onVoltageBoost()
+        CM.device<PR>(DD2).onKTR()
         sleep(200)
-        CM.device<PR>(DD2).onMVZ()
+        CM.device<PR>(DD2).on30to5Amperage()
         sleep(200)
         if (isFirstPlatform) {
-            CM.device<PR>(DD2).onTestItemP1()
+            CM.device<PR>(DD2).onU()
         } else {
-            CM.device<PR>(DD2).onTestItemP2()
+            CM.device<PR>(DD2).onVD()
         }
         sleep(200)
     }
@@ -335,14 +335,14 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
         if (isRunning && testModel.measuredI < 30) {
             appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
-            CM.device<PR>(DD2).on30To5AmperageStage()
+            CM.device<PR>(DD2).on100To5AmperageStage()
             CM.device<PR>(DD2).offMaxAmperageStage()
-            testModel.amperageStage = AmperageStage.FROM_30_TO_5
+            testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
             if (isRunning && testModel.measuredI < 4) {
                 appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
                 CM.device<PR>(DD2).onMinAmperageStage()
-                CM.device<PR>(DD2).off30To5AmperageStage()
+                CM.device<PR>(DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_5_TO_5
                 sleepWhileRun(3)
             }
@@ -352,7 +352,7 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
     private fun returnAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Возврат токовой ступени...")
         CM.device<PR>(DD2).onMaxAmperageStage()
-        testModel.amperageStage = AmperageStage.FROM_150_TO_5
+        testModel.amperageStage = AmperageStage.FROM_500_TO_5
         CM.device<PR>(DD2).offOtherAmperageStages()
     }
 

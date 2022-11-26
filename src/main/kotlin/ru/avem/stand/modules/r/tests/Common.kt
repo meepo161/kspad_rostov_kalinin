@@ -1,9 +1,10 @@
 package ru.avem.stand.modules.r.tests
 
 enum class AmperageStage(val ratio: Double) {
-    FROM_150_TO_5(150.0 / 5.0),
+    FROM_500_TO_5(500.0 / 5.0),
+    FROM_100_TO_5(100.0 / 5.0),
     FROM_30_TO_5(30.0 / 5.0),
-    FROM_5_TO_5(5.0 / 5.0)
+    FROM_5_TO_5(5.0 / 5.0),
 }
 
 fun calcSyncRPM(F: Int, N: Int): Double {
