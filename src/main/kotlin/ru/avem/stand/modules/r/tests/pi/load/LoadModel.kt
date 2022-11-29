@@ -69,9 +69,6 @@ object LoadModel : TestModel() {
     var fLM = 0.0
 
     @Volatile
-    var isLMDirectionRight = true
-
-    @Volatile
     var isTIDirectionRight = true
 
     @Volatile

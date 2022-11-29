@@ -7,7 +7,6 @@ import ru.avem.kserialpooler.communication.utils.TypeByteOrder
 import ru.avem.kserialpooler.communication.utils.allocateOrderedByteBuffer
 import ru.avem.stand.modules.r.communication.model.DeviceController
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
-import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000Model
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -151,7 +150,7 @@ class Optimus(
         writeRegister(getRegisterById(OptimusModel.FREQUENCY_5_REGISTER), 60.hz())
     }
 
-    fun setObjectParamsVIU(
+    fun setObjectParamsVIUandMVZ(
     ) {
         writeRegister(getRegisterById(OptimusModel.VOLTAGE_1_REGISTER), 0.v())
         writeRegister(getRegisterById(OptimusModel.FREQUENCY_1_REGISTER), 0.hz())
@@ -162,11 +161,11 @@ class Optimus(
         writeRegister(getRegisterById(OptimusModel.VOLTAGE_3_REGISTER), 0.v())
         writeRegister(getRegisterById(OptimusModel.FREQUENCY_3_REGISTER), 0.hz())
 
-        writeRegister(getRegisterById(OptimusModel.VOLTAGE_4_REGISTER), 0.v())
-        writeRegister(getRegisterById(OptimusModel.FREQUENCY_4_REGISTER), 0.hz())
+        writeRegister(getRegisterById(OptimusModel.VOLTAGE_4_REGISTER), 1.v())
+        writeRegister(getRegisterById(OptimusModel.FREQUENCY_4_REGISTER), 50.hz())
 
         writeRegister(getRegisterById(OptimusModel.VOLTAGE_5_REGISTER), 1.v())
-        writeRegister(getRegisterById(OptimusModel.FREQUENCY_5_REGISTER), 50.hz())
+        writeRegister(getRegisterById(OptimusModel.FREQUENCY_5_REGISTER), 51.hz())
     }
 
     fun setObjectUMax(voltageMax: Number) {

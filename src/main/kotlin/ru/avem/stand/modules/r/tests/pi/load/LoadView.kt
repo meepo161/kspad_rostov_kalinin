@@ -137,8 +137,6 @@ class LoadView(title: String = "НАГР", showOnStart: Boolean = true) : TestVi
                 prefWidth = 270.0
                 columnResizePolicy = SmartResize.POLICY
                 mouseTransparentProperty().set(true)
-                column("M, Н⋅м", LoadData::torque.getter)
-                column("P2, кВт", LoadData::P2.getter)
                 column("КПД, о.е.", LoadData::efficiency.getter)
                 column("s, %", LoadData::sk.getter)
             }

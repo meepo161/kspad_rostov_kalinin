@@ -6,10 +6,7 @@ import ru.avem.kserialpooler.communication.utils.TransportException
 import ru.avem.kserialpooler.communication.utils.TypeByteOrder
 import ru.avem.kserialpooler.communication.utils.allocateOrderedByteBuffer
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
-import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.ASYNC_FREQ
-import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.ASYNC_VOLTAGE
 import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.CONTROL_REGISTER
-import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.INITIAL_DIRECTION
 import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.RUNNING_FREQUENCY
 import ru.avem.stand.modules.r.communication.model.IDeviceController
 import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.MAX_OPERATIONG_FREQ
@@ -152,27 +149,21 @@ class HPMont(
     }
 
     fun setObjectParams(
-        vReg2: Double = 1.0,
-        vReg3: Double = 1.0,
-        direction: Int = 0
+        vReg3: Double = 0.1
     ) {
-//        writeRegister(getRegisterById(INITIAL_DIRECTION), direction.toShort())
         writeRegister(getRegisterById(TEMP), 4.toShort())
-        writeRegister(getRegisterById(MAX_OUT_FREQ), 5555.toShort())
-        writeRegister(getRegisterById(MAX_OPERATIONG_FREQ), 5555.toShort())
-//        writeRegister(getRegisterById(ASYNC_VOLTAGE), 380.v())
-//        writeRegister(getRegisterById(ASYNC_FREQ), 555.toShort())
+        writeRegister(getRegisterById(MAX_OUT_FREQ), 5000.toShort())
+        writeRegister(getRegisterById(MAX_OPERATIONG_FREQ), 5000.toShort())
+        writeRegister(getRegisterById(POINT_3_VOLTAGE_REGISTER), vReg3.percent())
         writeRegister(getRegisterById(POINT_3_FREQUENCY_REGISTER), 100.percent())
-        writeRegister(getRegisterById(POINT_3_VOLTAGE_REGISTER), vReg3.v())
-        writeRegister(getRegisterById(POINT_2_FREQUENCY_REGISTER), 50.percent())
-        writeRegister(getRegisterById(POINT_2_VOLTAGE_REGISTER), vReg2.v())
+        writeRegister(getRegisterById(POINT_2_VOLTAGE_REGISTER), 0.percent())
+        writeRegister(getRegisterById(POINT_2_FREQUENCY_REGISTER), 0.percent())
+        writeRegister(getRegisterById(POINT_1_VOLTAGE_REGISTER), 0.percent())
         writeRegister(getRegisterById(POINT_1_FREQUENCY_REGISTER), 0.percent())
-        writeRegister(getRegisterById(POINT_1_VOLTAGE_REGISTER), 0.v())
     }
 
-    fun setObjectU(voltage: Double) {
-        writeRegister(getRegisterById(POINT_3_VOLTAGE_REGISTER), voltage.v())
-        writeRegister(getRegisterById(POINT_2_VOLTAGE_REGISTER), voltage.v())
+    fun setObjectU(voltagePercent: Double) {
+        writeRegister(getRegisterById(POINT_3_VOLTAGE_REGISTER), voltagePercent.percent())
     }
 
     private fun Number.hz(): Short = (this.toDouble() * 100).toInt().toShort()

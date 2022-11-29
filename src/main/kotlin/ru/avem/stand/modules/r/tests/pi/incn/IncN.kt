@@ -235,8 +235,12 @@ class IncN : KSPADTest(view = IncNView::class, reportTemplate = "incn.xlsx") {
             sleepWhileRun(3)
         }
         while (frequency < 60.0 && isRunning) {
-            frequency += 0.1
+            frequency += 0.2
             sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+        if (isRunning) {
+            frequency = 60.0
             CM.device<Optimus>(UZ91).setObjectFCur(frequency)
         }
     }
@@ -261,12 +265,12 @@ class IncN : KSPADTest(view = IncNView::class, reportTemplate = "incn.xlsx") {
                 CM.device<PR>(DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_30_TO_5
                 sleepWhileRun(3)
-                if (isRunning && testModel.measuredI < 5) {
-                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-                    CM.device<PR>(DD2).onMinAmperageStage()
-                    CM.device<PR>(DD2).off30to5Amperage()
-                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
-                }
+//                if (isRunning && testModel.measuredI < 5) {
+//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+//                    CM.device<PR>(DD2).onMinAmperageStage()
+//                    CM.device<PR>(DD2).off30to5Amperage()
+//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+//                }
             }
         }
     }

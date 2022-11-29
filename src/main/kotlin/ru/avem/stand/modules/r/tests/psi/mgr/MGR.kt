@@ -88,14 +88,11 @@ class MGR : KSPADTest(view = MGRView::class, reportTemplate = "mgr.xlsx") {
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(DD2).onShuntViu()
-        sleep(200)
-        CM.device<PR>(DD2).onGround()
-        sleep(200)
-
         sleepWhileRun(1)
-
+        CM.device<PR>(DD2).onPE()
+        sleepWhileRun(1)
         CM.device<PR>(DD2).onMGR()
-        sleep(200)
+        sleepWhileRun(1)
         CM.device<PR>(DD2).offShuntViu()
     }
 
@@ -131,7 +128,7 @@ class MGR : KSPADTest(view = MGRView::class, reportTemplate = "mgr.xlsx") {
                     testModel.measuredData.kABS.value = measuredAbs.autoformat()
                 }
                 CM.device<PR>(DD2).offMGR()
-                CM.device<PR>(DD2).offGround()
+                CM.device<PR>(DD2).offPE()
                 sleepWhileRun(3)
                 CM.device<PR>(DD2).resetTriggers()
                 appendMessageToLog(LogTag.DEBUG, "Заземление...")

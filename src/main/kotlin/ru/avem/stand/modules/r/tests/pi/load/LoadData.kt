@@ -21,7 +21,6 @@ data class LoadData(
     val cos: StringProperty = SimpleStringProperty(""),
     val P1: StringProperty = SimpleStringProperty(""),
     val F: StringProperty = SimpleStringProperty(""),
-    val P2: StringProperty = SimpleStringProperty(""),
     val efficiency: StringProperty = SimpleStringProperty(""),
     val sk: StringProperty = SimpleStringProperty(""),
 
@@ -35,7 +34,6 @@ data class LoadData(
     val v2y: StringProperty = SimpleStringProperty(""),
     val v2z: StringProperty = SimpleStringProperty(""),
 
-    val torque: StringProperty = SimpleStringProperty(""),
     val RPM: StringProperty = SimpleStringProperty(""),
     val tempAmb: StringProperty = SimpleStringProperty(""),
     val tempTI: StringProperty = SimpleStringProperty(""),

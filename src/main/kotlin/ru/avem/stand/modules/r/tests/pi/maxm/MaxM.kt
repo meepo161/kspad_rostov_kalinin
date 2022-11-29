@@ -208,7 +208,7 @@ class MaxM : KSPADTest(view = MaxMView::class, reportTemplate = "maxm.xlsx") {
             if (isFirstPlatform) {
                 CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
             } else {
-                CM.device<PR>(CM.DeviceID.DD2).offGround()
+                CM.device<PR>(CM.DeviceID.DD2).offPE()
             }
             stopFI(CM.device(CM.DeviceID.UZ91))
         }
@@ -258,7 +258,7 @@ class MaxM : KSPADTest(view = MaxMView::class, reportTemplate = "maxm.xlsx") {
             CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
             CM.device<PR>(CM.DeviceID.DD2).onU()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onGround()
+            CM.device<PR>(CM.DeviceID.DD2).onPE()
             CM.device<PR>(CM.DeviceID.DD2).onVD()
         }
         sleep(200)

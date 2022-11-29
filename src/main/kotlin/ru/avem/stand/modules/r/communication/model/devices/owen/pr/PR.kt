@@ -245,11 +245,11 @@ class PR(
         offOutput01To16(14)
     }
 
-    fun onGround() {
+    fun onPE() {
         onOutput01To16(15)
     }
 
-    fun offGround() {
+    fun offPE() {
         offOutput01To16(15)
     }
 

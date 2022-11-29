@@ -145,7 +145,7 @@ abstract class KSPADTest(
 
     protected fun stopOptimus(fi: Optimus, stopTime: Int = 7) {
         appendMessageToLog(LogTag.INFO, "Останов...")
-        fi.stopObject()
+        fi.stopObjectNaVibege()
     }
 
     private fun waitUntilFIToStop(stopTime: Int = 7) {

@@ -233,7 +233,7 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         if (isFirstPlatform) {
             CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onGround()
+            CM.device<PR>(CM.DeviceID.DD2).onPE()
         }
 
         CM.device<C2000>(CM.DeviceID.UZ92).setObjectParams(
@@ -252,7 +252,7 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         if (isFirstPlatform) {
             CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).offGround()
+            CM.device<PR>(CM.DeviceID.DD2).offPE()
         }
     }
 
@@ -343,7 +343,7 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         if (isFirstPlatform) {
             CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).onGround()
+            CM.device<PR>(CM.DeviceID.DD2).onPE()
         }
         CM.device<C2000>(CM.DeviceID.UZ92).setObjectParams(
             fOut = 50,
@@ -399,7 +399,7 @@ class MinM : KSPADTest(view = MinMView::class, reportTemplate = "minm.xlsx") {
         if (isFirstPlatform) {
             CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
         } else {
-            CM.device<PR>(CM.DeviceID.DD2).offGround()
+            CM.device<PR>(CM.DeviceID.DD2).offPE()
         }
     }
 

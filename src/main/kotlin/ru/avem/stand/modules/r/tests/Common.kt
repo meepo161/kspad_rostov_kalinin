@@ -18,25 +18,11 @@ fun calcSyncRPM(F: Int, N: Int): Double {
 }
 
 fun calcZs(isFirstPlatform: Boolean, syncN: Int): Pair<Double, Double> {
-    return if (isFirstPlatform) {
-        when (syncN) {
-            500 -> 630.0 to 212.0
-            600 -> 630.0 to 250.0
-            750 -> 630.0 to 315.0
-            1000 -> 630.0 to 425.0
-            1500 -> 425.0 to 425.0
-            3000 -> 315.0 to 630.0
-            else -> throw Exception("Не удалось расчитать параметры шиквов для ${if (isFirstPlatform) "первой" else "второй"} платформы с синхронными оборотами $syncN об/мин")
-        }
-    } else {
-        when (syncN) {
-            500 -> 355.0 to 118.0
-            600 -> 355.0 to 140.0
-            750 -> 355.0 to 180.0
-            1000 -> 355.0 to 236.0
-            1500 -> 236.0 to 236.0
-            3000 -> 180.0 to 355.0
-            else -> throw Exception("Не удалось расчитать параметры шиквов для ${if (isFirstPlatform) "первой" else "второй"} платформы с синхронными оборотами $syncN об/мин")
-        }
+    return when (syncN) {
+        750 ->  500.0 to 250.0
+        1000 -> 500.0 to 355.0
+        1500 -> 355.0 to 355.0
+        3000 -> 250.0 to 500.0
+        else -> throw Exception("Не удалось расчитать параметры шиквов для ${if (isFirstPlatform) "первой" else "второй"} платформы с синхронными оборотами $syncN об/мин")
     }
 }

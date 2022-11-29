@@ -4,47 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ac2102-2cc5-4e56-bd64-edd1d8d16ede" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/ikas10/IKAS10.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/ikas10/IKAS10Model.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/hpmont/HPMont.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/hpmont/HPMontModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/optimus/Optimus.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/optimus/OptimusModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/background.jfif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/translucent-background-kalinin.png" afterDir="false" />
+    <list default="true" id="50ac2102-2cc5-4e56-bd64-edd1d8d16ede" name="Default Changelist" comment="Idle +&#10;Ikas +">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/TestModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/TestModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/Styles.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/Styles.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/TFXViewManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/TFXViewManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/TestViewModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/i/views/TestViewModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/AggregateView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/AggregateView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/authorization/AuthorizationView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/authorization/AuthorizationView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/prefill/PreFillTab.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/common/prefill/PreFillTab.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/CM.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/CM.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/ikas/IKAS8.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/avem/ikas/IKAS8Model.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/hpmont/HPMont.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/hpmont/HPMont.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/optimus/Optimus.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/optimus/Optimus.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/pr/PR.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/pr/PR.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/pr/PRModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/communication/model/devices/owen/pr/PRModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/Common.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/Common.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/KSPADTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/KSPADTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/ProtectionsData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/ProtectionsData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncN.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncN.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/Load.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/Load.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/load/LoadView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/maxm/MaxM.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/maxm/MaxM.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/minm/MinM.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/minm/MinM.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overi/OverI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overi/OverI.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overm/OverM.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/overm/OverM.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/startmi/StartMI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/startmi/StartMI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/varyuf/VaryUF.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/varyuf/VaryUF.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HV.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HV.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HVView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HVView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/Idle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/Idle.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/idle/IdleView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/ikas/IKAS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/ikas/IKAS.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/kz/KZ.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/kz/KZ.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mgr/MGR.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mgr/MGR.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mvz/MVZ.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/mvz/MVZ.kt" afterDir="false" />
@@ -124,17 +102,17 @@
     <option name="abbreviatePackageNames" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "C:/Users/MagaHP/IdeaProjects/prommashtest/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNData.kt",
-    "show.migrate.to.gradle.popup": "false",
-    "two.files.diff.last.used.file": "C:/Users/MagaHP/IdeaProjects/prommashtest/src/main/kotlin/ru/avem/stand/modules/r/tests/pi/incn/IncNData.kt"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/nasosi&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/MagaHP/IdeaProjects/prommashtest/src/main/kotlin/ru/avem/stand/modules/r/tests/psi/hv/HV.kt&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\MagaHP\IdeaProjects\prommashtest\src\main\resources" />
@@ -222,6 +200,14 @@
       <option name="presentableId" value="Default" />
       <updated>1621546090790</updated>
     </task>
+    <task id="LOCAL-00001" summary="Idle +&#10;Ikas +">
+      <created>1669455668966</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669455668966</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -234,6 +220,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Idle +&#10;Ikas +" />
+    <option name="LAST_COMMIT_MESSAGE" value="Idle +&#10;Ikas +" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

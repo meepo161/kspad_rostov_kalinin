@@ -4,14 +4,13 @@ import ru.avem.stand.modules.i.tests.LogTag
 import ru.avem.stand.modules.i.views.showTwoWayDialog
 import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
-import ru.avem.stand.modules.r.communication.model.devices.avem.ikas10.IKAS10
-import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
+import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMont
+import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel
+import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.th01.TH01Model
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
-import ru.avem.stand.modules.r.communication.model.devices.prosoftsystems.ivd3c.IVD3CModel
 import ru.avem.stand.modules.r.communication.model.devices.satec.pm130.PM130Model
-import ru.avem.stand.modules.r.communication.model.devices.tilkom.T42Model
 import ru.avem.stand.modules.r.tests.AmperageStage
 import ru.avem.stand.modules.r.tests.KSPADTest
 import ru.avem.stand.modules.r.tests.calcSyncRPM
@@ -30,6 +29,8 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
     override val name = "Испытание на нагрев"
 
     override val testModel = LoadModel
+
+    var frequency = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -95,8 +96,6 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
             testModel.measuredData.tempTI.value = ""
             testModel.measuredData.T0After.value = ""
 
-            testModel.measuredData.torque.value = ""
-            testModel.measuredData.P2.value = ""
             testModel.measuredData.efficiency.value = ""
             testModel.measuredData.sk.value = ""
 
@@ -171,36 +170,12 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         }
 
         if (isRunning) {
-            with(CM.DeviceID.BT100) {
-                addCheckableDevice(this)
-                CM.startPoll(this, T42Model.TORQUE) { value ->
-                    if (!testModel.isStaticErrorTorqueSet) {
-                        testModel.isStaticErrorTorqueSet = true
-                        testModel.staticErrorTorque = value.toDouble()
-                    }
-                    testModel.measuredTorque = if (testModel.isNeedAbsTorque) {
-                        abs(value.toDouble() - testModel.staticErrorTorque)
-                    } else {
-                        value.toDouble() - testModel.staticErrorTorque
-                    }
-
-                    testModel.measuredData.torque.value = testModel.measuredTorque.autoformat()
-                }
-            }
-        }
-
-        if (isRunning) {
             with(CM.DeviceID.PC71) {
                 addCheckableDevice(this)
                 CM.startPoll(this, TH01Model.RPM) { value ->
                     testModel.measuredData.RPM.value = value.toDouble().autoformat()
-                    testModel.measuredP2 =
-                        abs(testModel.measuredData.torque.value.toDouble() * testModel.measuredData.RPM.value.toDouble() * 2 * Math.PI / 60.0 / 1000.0)
-                    testModel.measuredData.P2.value = testModel.measuredP2.autoformat()
-                    testModel.measuredData.efficiency.value = (testModel.measuredP2 / testModel.measuredP1).autoformat()
-
-                    testModel.measuredData.sk.value =
-                        (100 * (testModel.syncRPM - testModel.measuredData.RPM.value.toDouble()) / testModel.syncRPM).autoformat()
+                    testModel.measuredData.efficiency.value = "нет"
+                    testModel.measuredData.sk.value = "нет"
                 }
             }
         }
@@ -219,12 +194,24 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         }
     }
 
+    private fun startPollLM() {
+        with(CM.DeviceID.UZ92) {
+            addCheckableDevice(this)
+            CM.startPoll(this, HPMontModel.OUTPUT_FREQUENCY_REGISTER) { value ->
+                value.toDouble() / 100
+            }
+            CM.startPoll(this, HPMontModel.OUTPUT_VOLTAGE_REGISTER) { value ->
+                value.toDouble()
+            }
+            CM.startPoll(this, HPMontModel.OUTPUT_CURRENT_REGISTER) { value ->
+                value.toDouble() / 100
+            }
+        }
+    }
+
     override fun logic() {
         if (isRunning) {
             calcF()
-        }
-        if (isRunning) {
-            proceedIKASBefore()
         }
         if (isRunning) {
             turnOnCircuit()
@@ -233,12 +220,14 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
             waitUntilFIToLoad()
         }
         if (isRunning) {
+            startPollLM()
+        }
+        if (isRunning) {
             testModel.isNeedAbsTorque = false
             checkLMDirection()
         }
         if (isRunning) {
             startTIFI()
-            waitUntilFIToRun()
         }
         if (isRunning) {
             startLMFI()
@@ -250,86 +239,26 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
             selectAmperageStage()
         }
         if (isRunning) {
-            waitingSteadyTemperature()
-        }
-        if (isRunning) {
             waiting()
         }
         storeTestValues()
         if (isRunning) {
-            if (isFirstPlatform) {
-                CM.device<PR>(CM.DeviceID.DD2).offShuntViu()
-            } else {
-                CM.device<PR>(CM.DeviceID.DD2).offGround()
-            }
             returnAmperageStage()
-            stopFI(CM.device(CM.DeviceID.UZ91))
         }
-        if (isRunning) {
-            proceedIKASAfter()
-        }
-    }
-
-    private fun proceedIKASBefore() {
-        appendMessageToLog(LogTag.INFO, "Измерение активного сопротивления...")
-
-        if (isRunning) {
-            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
-            while (isRunning && testModel.status != 0 && testModel.status != 101) {
-                sleep(100)
-            }
-            while (isRunning && testModel.measuredR == -1.0) {
-                sleep(100)
-            }
-            testModel.measuredData.R1.value =
-                if (testModel.measuredR != 1E9) testModel.measuredR.autoformat() else "Обрыв"
-        }
-
-        if (isRunning) {
-            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringBC()
-            while (isRunning && testModel.status != 0 && testModel.status != 101) {
-                sleep(100)
-            }
-            while (isRunning && testModel.measuredR == -1.0) {
-                sleep(100)
-            }
-            testModel.measuredData.R2.value =
-                if (testModel.measuredR != 1E9) testModel.measuredR.autoformat() else "Обрыв"
-        }
-
-        if (isRunning) {
-            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringCA()
-            while (isRunning && testModel.status != 0 && testModel.status != 101) {
-                sleep(100)
-            }
-            while (isRunning && testModel.measuredR == -1.0) {
-                sleep(100)
-            }
-            testModel.measuredData.R3.value =
-                if (testModel.measuredR != 1E9) testModel.measuredR.autoformat() else "Обрыв"
-        }
-
-        if (testModel.measuredData.R1.value == "Обрыв" || testModel.measuredData.R2.value == "Обрыв" || testModel.measuredData.R3.value == "Обрыв") {
-            cause = "Не удалось определить R из-за \"обрыва\" на первом этапе измерения активного сопротивления"
-        } else {
-            val R1 = testModel.measuredData.R1.value.toDouble()
-            val R2 = testModel.measuredData.R2.value.toDouble()
-            val R3 = testModel.measuredData.R3.value.toDouble()
-
-            val averageRCold = (R1 + R2 + R3) / 3.0
-            val averageRHalf = averageRCold / 2.0
-            testModel.RCold = averageRHalf / (1 + 0.00393f * (testModel.measuredData.tempAmb.value.toDouble() - 20))
-        }
+        stopOptimus(CM.device(CM.DeviceID.UZ91))
+        CM.device<HPMont>(CM.DeviceID.UZ92).stopObject()
+        sleepWhileRun(3)
     }
 
     private fun calcF() {
         val (zTI, zLM) = calcZs(isFirstPlatform, testModel.syncRPM.toInt())
         showZDialog(zTI.toInt(), zLM.toInt())
-        val nTI = testModel.specifiedRPM // TODO реальное значение
+        val nTI = testModel.specifiedRPM //TODO реальное значение
         val fNom = testModel.specifiedF
-        val nLM = 1480.0
+        val nLM = 1490.0
 
         testModel.fLM = (nTI * zTI * fNom) / (nLM * zLM)
+        appendMessageToLog(LogTag.INFO, "частота НМ ${testModel.fLM} Гц")
     }
 
     private fun showZDialog(zTI: Int, zLM: Int) {
@@ -353,88 +282,120 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(CM.DeviceID.DD2).onStart()
-        sleep(200)
+        sleepWhileRun(1)
+        CM.device<PR>(CM.DeviceID.DD2).onU()
+        sleepWhileRun(1)
         CM.device<PR>(CM.DeviceID.DD2).onMaxAmperageStage()
+        sleepWhileRun(1)
+        CM.device<PR>(CM.DeviceID.DD2).onFromFI()
         testModel.amperageStage = AmperageStage.FROM_500_TO_5
-        sleep(200)
-//        CM.device<PR>(CM.DeviceID.DD2).fromFI()
-        sleep(200)
-        if (isFirstPlatform) {
-            CM.device<PR>(CM.DeviceID.DD2).onShuntViu()
-            CM.device<PR>(CM.DeviceID.DD2).onU()
-        } else {
-            CM.device<PR>(CM.DeviceID.DD2).onGround()
-            CM.device<PR>(CM.DeviceID.DD2).onVD()
-        }
-        sleep(200)
+        sleepWhileRun(1)
     }
 
     private fun checkLMDirection() {
-        appendMessageToLog(LogTag.INFO, "Проверка направления вращения НМ...")
-        CM.device<C2000>(CM.DeviceID.UZ92).setObjectParams(
-            fOut = 50,
+        appendMessageToLog(LogTag.INFO, "Проверка направления вращения ОИ и НМ...")
+        CM.device<Optimus>(CM.DeviceID.UZ91).setObjectParamsRun(380.0)
+        if (isRunning) {
+            frequency = 0.0
+            sleepWhileRun(3)
+            CM.device<Optimus>(CM.DeviceID.UZ91).setObjectFCur(frequency)
+            sleepWhileRun(3)
+            CM.device<Optimus>(CM.DeviceID.UZ91).startObject()
+            sleepWhileRun(3)
+        }
+        while (frequency < 5.0 && isRunning) {
+            frequency += 0.1
+            sleep(100)
+            CM.device<Optimus>(CM.DeviceID.UZ91).setObjectFCur(frequency)
+        }
+        frequency = 0.0
+        CM.device<Optimus>(CM.DeviceID.UZ91).stopObjectNaVibege()
+        sleep(3000)
 
-            voltageP1 = 380,
-            fP1 = 50,
+        CM.device<HPMont>(CM.DeviceID.UZ92).setObjectParams(100.0)
+        sleepWhileRun(3)
+        CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(0.0)
+        sleepWhileRun(3)
+        CM.device<HPMont>(CM.DeviceID.UZ92).startObject()
+        var frequencyLM = 0.0
+        while (frequencyLM < 5.0 && isRunning) {
+            frequencyLM += 0.1
+            sleep(100)
+            CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(frequencyLM)
+        }
+        CM.device<HPMont>(CM.DeviceID.UZ92).stopObject()
+        sleepWhileRun(3)
+        CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(0.0)
 
-            voltageP2 = 1,
-            fP2 = 1
-        )
-        startFI(CM.device(CM.DeviceID.UZ92), 5)
-        testModel.isLMDirectionRight = testModel.measuredData.torque.value.toDouble() > 0.0
-        stopFI(CM.device(CM.DeviceID.UZ92))
+        try {
+            showTwoWayDialog(
+                "Внимание",
+                "ОИ и НМ вращаются в одну сторону?",
+                "ДА",
+                "НЕТ",
+                { testModel.isTIDirectionRight = true },
+                { testModel.isTIDirectionRight = false },
+                200_000,
+                { false },
+                find(view).currentWindow!!
+            )
+        } catch (e: Exception) {
+            cause = "Диалог не был обработан в течение 200 с"
+        }
+
     }
 
     private fun startTIFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ОИ...")
-        CM.device<C2000>(CM.DeviceID.UZ91).setObjectParams(
-            fOut = testModel.specifiedF,
-
-            voltageP1 = testModel.specifiedU,
-            fP1 = testModel.specifiedF,
-
-            voltageP2 = 1,
-            fP2 = 1
-        )
-        CM.device<C2000>(CM.DeviceID.UZ91).startObject()
-        sleepWhileRun(5)
-        testModel.isTIDirectionRight = testModel.measuredTorque < 0.0
-        testModel.isNeedAbsTorque = true
+        CM.device<Optimus>(CM.DeviceID.UZ91).setObjectParamsRun(380.0)
+        if (isRunning) {
+            frequency = 0.0
+            sleepWhileRun(3)
+            CM.device<Optimus>(CM.DeviceID.UZ91).setObjectFCur(frequency)
+            sleepWhileRun(3)
+            if (testModel.isTIDirectionRight) {
+                CM.device<Optimus>(CM.DeviceID.UZ91).startObject()
+            } else {
+                CM.device<Optimus>(CM.DeviceID.UZ91).startObjectReverse()
+            }
+            sleepWhileRun(3)
+        }
+        while (frequency < 50.0 && isRunning) {
+            frequency += 1.0
+            sleep(500)
+            CM.device<Optimus>(CM.DeviceID.UZ91).setObjectFCur(frequency)
+        }
+        if (isRunning) {
+            frequency = 50.0
+            CM.device<Optimus>(CM.DeviceID.UZ91).setObjectFCur(frequency)
+        }
+        sleepWhileRun(3)
     }
 
     private fun startLMFI() {
         appendMessageToLog(LogTag.INFO, "Разгон НМ...")
 
-        var u = 5
-        val maxU = 380
+        var u = 1.0
+        val maxU = 100.0
 
-        CM.device<C2000>(CM.DeviceID.UZ92).setObjectParams(
-            fOut = testModel.fLM,
-
-            voltageP1 = u,
-            fP1 = testModel.fLM,
-
-            voltageP2 = 1,
-            fP2 = 1
-        )
-        val lmDirection = if (!testModel.isLMDirectionRight xor !testModel.isTIDirectionRight) {
-            appendMessageToLog(LogTag.INFO, "Реверс НМ")
-            C2000.Direction.REVERSE
-        } else {
-            C2000.Direction.FORWARD
-        }
-        CM.device<C2000>(CM.DeviceID.UZ92).startObject(lmDirection)
+        CM.device<HPMont>(CM.DeviceID.UZ92).setObjectParams(u)
+        sleepWhileRun(3)
+        CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(testModel.fLM)
+        sleepWhileRun(3)
+        CM.device<HPMont>(CM.DeviceID.UZ92).startObject()
+        sleepWhileRun(3)
 
         while (isRunning && u < maxU) {
             u++
-            CM.device<C2000>(CM.DeviceID.UZ92).setObjectUMax(u)
-            if (u % 10 == 0) {
-                appendMessageToLog(LogTag.INFO, "НМ U = $u В")
+            CM.device<HPMont>(CM.DeviceID.UZ92).setObjectU(u)
+            if (u % 10 == 0.0) {
+                appendMessageToLog(LogTag.INFO, "НМ U = ${u * 3.8} В")
             }
             sleep(100)
         }
-
-        CM.device<C2000>(CM.DeviceID.UZ92).setObjectUMax(maxU)
+        if (isRunning) {
+            CM.device<HPMont>(CM.DeviceID.UZ92).setObjectU(100.0)
+        }
     }
 
     private fun load() {
@@ -456,27 +417,27 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
     }
 
     private fun regulationTo(minPercent: Double, maxPercent: Double = minPercent, step: Double, wait: Long) {
-        val min = testModel.specifiedP * (100.0 - minPercent) / 100.0
-        val max = testModel.specifiedP * (100.0 + maxPercent) / 100.0
+        val min = testModel.specifiedI * (100.0 - minPercent) / 100.0
+        val max = testModel.specifiedI * (100.0 + maxPercent) / 100.0
 
         val initTime = System.currentTimeMillis()
-        val initValue = testModel.measuredP2
+        val initValue = testModel.measuredI
         val initPercent = 7
         val timeout = 20000
 
-        while (isRunning && (testModel.measuredP2 < min || testModel.measuredP2 > max)) {
-            if ((abs(testModel.measuredP2 - initValue) / initValue) < initPercent / 100.0) {
+        while (isRunning && (testModel.measuredI < min || testModel.measuredI > max)) {
+            if ((abs(testModel.measuredI - initValue) / initValue) < initPercent / 100.0) {
                 val elapsedTime = System.currentTimeMillis() - initTime
                 if (elapsedTime > timeout) {
 //                    cause = "в течение ${timeout / 1000} секунд значение изменилось меньше, чем на $initPercent%"
                 }
             }
-            if (testModel.measuredP2 < min) {
+            if (testModel.measuredI < min) {
                 testModel.fLM -= step
             }
             if (testModel.fLM <= 0) {
                 testModel.fLM = 0.0
-                CM.device<C2000>(CM.DeviceID.UZ92).setObjectFOut(testModel.fLM)
+                CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(testModel.fLM)
                 try {
                     showTwoWayDialog(
                         "Внимание",
@@ -494,12 +455,12 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
                 }
                 return
             }
-            if (testModel.measuredP2 > max) {
+            if (testModel.measuredI > max) {
                 testModel.fLM += step
             }
             if (testModel.fLM >= 55.0) {
                 testModel.fLM = 55.0
-                CM.device<C2000>(CM.DeviceID.UZ92).setObjectFOut(testModel.fLM)
+                CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(testModel.fLM)
                 try {
                     showTwoWayDialog(
                         "Внимание",
@@ -517,122 +478,38 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
                 }
                 return
             }
-            CM.device<C2000>(CM.DeviceID.UZ92).setObjectFOut(testModel.fLM)
+            CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(testModel.fLM)
             sleep(wait)
         }
     }
 
     private fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
-        if (isRunning && testModel.measuredI < 30) {
-            appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+        if (isRunning && testModel.measuredI < 100) {
+            appendMessageToLog(LogTag.INFO, "Переключение на 100/5")
             CM.device<PR>(CM.DeviceID.DD2).on100To5AmperageStage()
             CM.device<PR>(CM.DeviceID.DD2).offMaxAmperageStage()
             testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
-            if (isRunning && testModel.measuredI < 4) {
-                appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-                CM.device<PR>(CM.DeviceID.DD2).onMinAmperageStage()
+            if (isRunning && testModel.measuredI < 30) {
+                appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+                CM.device<PR>(CM.DeviceID.DD2).on30to5Amperage()
                 CM.device<PR>(CM.DeviceID.DD2).off100To5AmperageStage()
-                testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                testModel.amperageStage = AmperageStage.FROM_30_TO_5
+                sleepWhileRun(3)
+//                if (isRunning && testModel.measuredI < 5) {
+//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+//                    CM.device<PR>(DD2).onMinAmperageStage()
+//                    CM.device<PR>(DD2).off30to5Amperage()
+//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+//                }
             }
         }
-    }
-
-    private fun waitingSteadyTemperature() {
-        appendMessageToLog(LogTag.INFO, "Ожидание нагрева...")
-        val maxTime = 120 * 10
-        var timer = maxTime
-        runLater {
-            testModel.progressProperty.value = -1.0
-        }
-        while (isRunning && timer-- > 0) {
-            if (testModel.tempTI > testModel.maxTemp) {
-                testModel.maxTemp = testModel.tempTI
-                appendMessageToLog(LogTag.INFO, "Максимальная температура ОИ = ${testModel.maxTemp} °C")
-                timer = maxTime
-            }
-            sleep(1000 / 10)
-        }
-        runLater {
-            testModel.progressProperty.value = 0.0
-        }
-        appendMessageToLog(LogTag.INFO, "Нагрев завершён...")
     }
 
     private fun waiting() {
         appendMessageToLog(LogTag.INFO, "Ожидание ${testModel.specifiedTestTime.toInt()} с...")
         sleepWhileRun(testModel.specifiedTestTime.toInt(), progressProperty = testModel.progressProperty)
-    }
-
-    private fun proceedIKASAfter() {
-        appendMessageToLog(LogTag.INFO, "Измерение активного сопротивления...")
-
-        if (isRunning) {
-            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
-            while (isRunning && testModel.status != 0 && testModel.status != 101) {
-                sleep(100)
-            }
-            while (isRunning && testModel.measuredR == -1.0) {
-                sleep(100)
-            }
-            testModel.measuredData.R1After.value =
-                if (testModel.measuredR != 1E9) testModel.measuredR.autoformat() else "Обрыв"
-        }
-
-        if (isRunning) {
-            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
-            while (isRunning && testModel.status != 0 && testModel.status != 101) {
-                sleep(100)
-            }
-            while (isRunning && testModel.measuredR == -1.0) {
-                sleep(100)
-            }
-            testModel.measuredData.R2After.value =
-                if (testModel.measuredR != 1E9) testModel.measuredR.autoformat() else "Обрыв"
-        }
-
-        sleepWhileRun(10)
-
-        if (isRunning) {
-            CM.device<IKAS10>(CM.DeviceID.PR61).startMeasuringAB()
-            while (isRunning && testModel.status != 0 && testModel.status != 101) {
-                sleep(100)
-            }
-            while (isRunning && testModel.measuredR == -1.0) {
-                sleep(100)
-            }
-            testModel.measuredData.R3After.value =
-                if (testModel.measuredR != 1E9) testModel.measuredR.autoformat() else "Обрыв"
-        }
-
-        testModel.measuredData.R0After.value = calcR0().autoformat()
-
-        if (isRunning) {
-            val RHot = testModel.measuredData.R0After.value.toDouble() / 2.0
-
-            testModel.measuredData.T0After.value = ((RHot / testModel.RCold - 1) / 0.00393 + 20).autoformat() // TODO 0.00393 is too hard
-        }
-    }
-
-    private fun calcR0(): Double {
-        return if (testModel.measuredData.R1After.value == "Обрыв" || testModel.measuredData.R2After.value == "Обрыв" || testModel.measuredData.R3After.value == "Обрыв") {
-            cause = "Не удалось посчитать температуру перегрева из-за \"обрыва\" на втором этапе измерения активного сопротивления"
-            Double.NaN
-        } else {
-            val r0Time = 0.0
-            val r1 = testModel.measuredData.R1After.value.toDouble()
-            val r1Time = testModel.measuredData.R1TimeAfter.value.toDouble()
-            val r2 = testModel.measuredData.R2After.value.toDouble()
-            val r2Time = testModel.measuredData.R2TimeAfter.value.toDouble()
-            val r3 = testModel.measuredData.R3After.value.toDouble()
-            val r3Time = testModel.measuredData.R3TimeAfter.value.toDouble()
-
-            10.0.pow((r0Time - r2Time) * (r0Time - r3Time) / ((r1Time - r2Time) * (r1Time - r3Time)) * log10(r1) +
-                        (r0Time - r1Time) * (r0Time - r3Time) / ((r2Time - r1Time) * (r2Time - r3Time)) * log10(r2) +
-                        (r0Time - r1Time) * (r0Time - r2Time) / ((r3Time - r1Time) * (r3Time - r2Time)) * log10(r3)
-            )
-        }
     }
 
     private fun storeTestValues() {
@@ -661,8 +538,6 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         testModel.storedData.tempAmb.value = testModel.measuredData.tempAmb.value
         testModel.storedData.tempTI.value = testModel.measuredData.tempTI.value
 
-        testModel.storedData.torque.value = testModel.measuredData.torque.value
-        testModel.storedData.P2.value = testModel.measuredData.P2.value
         testModel.storedData.efficiency.value = testModel.measuredData.efficiency.value
         testModel.storedData.sk.value = testModel.measuredData.sk.value
     }
@@ -720,8 +595,6 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         testModel.measuredData.tempAmb.value = testModel.storedData.tempAmb.value
         testModel.measuredData.tempTI.value = testModel.storedData.tempTI.value
 
-        testModel.measuredData.torque.value = testModel.storedData.torque.value
-        testModel.measuredData.P2.value = testModel.storedData.P2.value
         testModel.measuredData.efficiency.value = testModel.storedData.efficiency.value
         testModel.measuredData.sk.value = testModel.storedData.sk.value
     }
@@ -763,7 +636,6 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
 
         reportFields["RPM_LOAD"] = testModel.measuredData.RPM.value
         reportFields["SK_LOAD"] = testModel.measuredData.sk.value
-        reportFields["TOTAL_P2_LOAD"] = testModel.measuredData.P2.value
         reportFields["EFFICIENCY_LOAD"] = testModel.measuredData.efficiency.value
         reportFields["TORQUE_LOAD"] = testModel.measuredData.tempTI.value
 

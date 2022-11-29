@@ -6,6 +6,7 @@ import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
 import ru.avem.stand.modules.r.communication.model.devices.avem.avem3.AVEM3Model
 import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
+import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
@@ -23,6 +24,8 @@ class KZ : KSPADTest(view = KZView::class, reportTemplate = "kz.xlsx") {
     override val name = "Определение тока и потерь КЗ"
 
     override val testModel = KZModel
+
+    var frequency = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -80,6 +83,30 @@ class KZ : KSPADTest(view = KZView::class, reportTemplate = "kz.xlsx") {
         if (isRunning) {
             with(PAV41) {
                 addCheckableDevice(this)
+                CM.startPoll(this, PM130Model.U_AB_REGISTER) { value ->
+                    testModel.measuredData.UAB.value = value.toDouble().autoformat()
+                    testModel.measuredU =
+                        (testModel.measuredData.UAB.value.toDoubleOrDefault(0.0)
+                                + testModel.measuredData.UBC.value.toDoubleOrDefault(0.0)
+                                + testModel.measuredData.UCA.value.toDoubleOrDefault(0.0)) / 3.0
+                    testModel.measuredData.U.value = testModel.measuredU.autoformat()
+                }
+                CM.startPoll(this, PM130Model.U_BC_REGISTER) { value ->
+                    testModel.measuredData.UBC.value = value.toDouble().autoformat()
+                    testModel.measuredU =
+                        (testModel.measuredData.UAB.value.toDoubleOrDefault(0.0) + testModel.measuredData.UBC.value.toDoubleOrDefault(
+                            0.0
+                        ) + testModel.measuredData.UCA.value.toDoubleOrDefault(0.0)) / 3.0
+                    testModel.measuredData.U.value = testModel.measuredU.autoformat()
+                }
+                CM.startPoll(this, PM130Model.U_CA_REGISTER) { value ->
+                    testModel.measuredData.UCA.value = value.toDouble().autoformat()
+                    testModel.measuredU =
+                        (testModel.measuredData.UAB.value.toDoubleOrDefault(0.0) + testModel.measuredData.UBC.value.toDoubleOrDefault(
+                            0.0
+                        ) + testModel.measuredData.UCA.value.toDoubleOrDefault(0.0)) / 3.0
+                    testModel.measuredData.U.value = testModel.measuredU.autoformat()
+                }
 
                 CM.startPoll(this, PM130Model.I_A_REGISTER) { value ->
                     testModel.measuredIA = abs(value.toDouble() * testModel.amperageStage.ratio)
@@ -112,21 +139,6 @@ class KZ : KSPADTest(view = KZView::class, reportTemplate = "kz.xlsx") {
                 }
             }
         }
-
-        if (isRunning) {
-            with(PV21) {
-                addCheckableDevice(this)
-
-                CM.startPoll(this, AVEM3Model.U_TRMS) { value ->
-                    testModel.measuredU = value.toDouble()
-                    testModel.measuredData.U.value = testModel.measuredU.autoformat()
-                    testModel.measuredData.UAB.value = testModel.measuredU.autoformat()
-                    testModel.measuredData.UBC.value = testModel.measuredU.autoformat()
-                    testModel.measuredData.UCA.value = testModel.measuredU.autoformat()
-                }
-            }
-        }
-
         if (isRunning) {
             with(CM.device<TRM202>(PS81)) {
                 with(getRegisterById(TRM202Model.T_1)) {
@@ -160,56 +172,65 @@ class KZ : KSPADTest(view = KZView::class, reportTemplate = "kz.xlsx") {
             waiting()
         }
         storeTestValues()
+        CM.device<Optimus>(UZ91).stopObjectNaVibege()
+        sleep(3000)
     }
 
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(DD2).onStart()
-        sleep(200)
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).onU()
+        sleepWhileRun(1)
         CM.device<PR>(DD2).onMaxAmperageStage()
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).onFromFI()
         testModel.amperageStage = AmperageStage.FROM_500_TO_5
-        sleep(200)
-//        CM.device<PR>(DD2).fromFI()
-        sleep(200)
-        if (isFirstPlatform) {
-            CM.device<PR>(DD2).onU()
-        } else {
-            CM.device<PR>(DD2).onVD()
-        }
-        sleep(200)
-//        CM.device<PR>(DD2).onMeasuringAVEM()
-        sleep(200)
+        sleepWhileRun(1)
     }
 
     private fun startFI() {
+        appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
+        CM.device<Optimus>(UZ91).setObjectParamsRun(110.0)
         if (isRunning) {
-            CM.device<C2000>(UZ91).setObjectParams(
-                fOut = testModel.specifiedF,
-
-                voltageP1 = testModel.specifiedU / 3.8,
-                fP1 = testModel.specifiedF,
-
-                voltageP2 = 1,
-                fP2 = 1
-            )
-            CM.device<C2000>(UZ91).startObject()
-            sleepWhileRun(5)
+            frequency = 0.0
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).startObject()
+            sleepWhileRun(3)
+        }
+        while (frequency < 50.0 && isRunning) {
+            frequency += 0.3
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+        if (isRunning) {
+            frequency = 50.0
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
         }
     }
 
     private fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
-        if (isRunning && testModel.measuredI < 30) {
-            appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+        if (isRunning && testModel.measuredI < 100) {
+            appendMessageToLog(LogTag.INFO, "Переключение на 100/5")
             CM.device<PR>(DD2).on100To5AmperageStage()
             CM.device<PR>(DD2).offMaxAmperageStage()
             testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
-            if (isRunning && testModel.measuredI < 4) {
-                appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-                CM.device<PR>(DD2).onMinAmperageStage()
+            if (isRunning && testModel.measuredI < 30) {
+                appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+                CM.device<PR>(DD2).on30to5Amperage()
                 CM.device<PR>(DD2).off100To5AmperageStage()
-                testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                testModel.amperageStage = AmperageStage.FROM_30_TO_5
+                sleepWhileRun(3)
+//                if (isRunning && testModel.measuredI < 5) {
+//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+//                    CM.device<PR>(DD2).onMinAmperageStage()
+//                    CM.device<PR>(DD2).off30to5Amperage()
+//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+//                }
             }
         }
     }

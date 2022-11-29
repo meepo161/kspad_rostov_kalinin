@@ -6,6 +6,7 @@ import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
 import ru.avem.stand.modules.r.communication.model.devices.avem.avem3.AVEM3Model
 import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
+import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
 import ru.avem.stand.modules.r.communication.model.devices.satec.pm130.PM130Model
 import ru.avem.stand.modules.r.tests.KSPADTest
@@ -20,6 +21,8 @@ class HV : KSPADTest(view = HVView::class, reportTemplate = "hv.xlsx") {
             "корпуса и между обмотками в практически холодном состоянии двигателя"
 
     override val testModel = HVModel
+    var frequency = 0.0
+    var lastFIP1U = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -110,42 +113,43 @@ class HV : KSPADTest(view = HVView::class, reportTemplate = "hv.xlsx") {
         }
         storeTestValues()
 
-        stopFI(CM.device(UZ91))
-//        CM.device<PR>(DD2).offHV()
-        sleep(200)
+        CM.device<Optimus>(UZ91).stopObjectNaVibege()
+        sleep(3000)
         CM.device<PR>(DD2).offVIU()
         sleep(200)
-//        CM.device<PR>(DD2).offPE()
     }
 
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(DD2).onStart()
-        sleep(200)
-//        CM.device<PR>(DD2).onShunting()
-        sleep(200)
-//        CM.device<PR>(DD2).onPE()
-        sleep(200)
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).onShuntViu()
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).onPE()
+        sleepWhileRun(1)
         CM.device<PR>(DD2).onVIU()
-        sleep(200)
-//        CM.device<PR>(DD2).onHV()
-        sleep(200)
-//        CM.device<PR>(DD2).offShunting()
+        sleepWhileRun(1)
+        CM.device<PR>(DD2).offShuntViu()
+        sleepWhileRun(1)
     }
 
     private fun startFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        testModel.lastFIP1U = 2.0
-        CM.device<C2000>(UZ91).setObjectParams(
-            fOut = testModel.specifiedF,
+        lastFIP1U = 1.0
+        CM.device<Optimus>(UZ91).setObjectParamsRun(lastFIP1U)
+        if (isRunning) {
+            frequency = 50.0
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).startObject()
+            sleepWhileRun(3)
+        }
+    }
 
-            voltageP1 = testModel.lastFIP1U,
-            fP1 = testModel.specifiedF,
-
-            voltageP2 = 1,
-            fP2 = 1
-        )
-        CM.device<C2000>(UZ91).startObject()
+    private fun waitUntilFIToRun() {
+        appendMessageToLog(LogTag.INFO, "Ожидание разгона...")
+        sleepWhileRun(3)
     }
 
     private fun regulateVoltage(
@@ -160,12 +164,12 @@ class HV : KSPADTest(view = HVView::class, reportTemplate = "hv.xlsx") {
 
         while (isRunning && (testModel.measuredU < min || testModel.measuredU > max)) {
             if (testModel.measuredU < min) {
-                testModel.lastFIP1U += step
+                lastFIP1U += step
             }
             if (testModel.measuredU > max) {
-                testModel.lastFIP1U -= step
+                lastFIP1U -= step
             }
-            CM.device<C2000>(UZ91).setObjectUMax(testModel.lastFIP1U)
+            CM.device<Optimus>(UZ91).setObjectUMax(lastFIP1U)
             sleep(wait)
         }
     }

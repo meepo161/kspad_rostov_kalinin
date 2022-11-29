@@ -2,6 +2,7 @@ package ru.avem.stand.modules.r.tests.psi.hv
 
 import javafx.event.EventTarget
 import javafx.geometry.Pos
+import javafx.scene.control.TableView
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import ru.avem.stand.modules.i.views.Styles
@@ -37,9 +38,9 @@ class HVView(title: String = "ВИУ", showOnStart: Boolean = true) : TestViewMo
             tableview(observableList(test.testModel.measuredData)) {
                 minHeight = 64.0
                 maxHeight = 64.0
-                minWidth = 150.0
-                prefWidth = 150.0
-                columnResizePolicy = SmartResize.POLICY
+                minWidth = 300.0
+                prefWidth = 300.0
+                columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                 mouseTransparentProperty().set(true)
 
                 alignment = Pos.CENTER

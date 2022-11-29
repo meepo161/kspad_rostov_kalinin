@@ -4,6 +4,8 @@ import ru.avem.stand.modules.i.tests.LogTag
 import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
+import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMont
+import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel
 import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
 import ru.avem.stand.modules.r.communication.model.devices.optimus.OptimusModel
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
@@ -28,6 +30,7 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
     override val testModel = IdleModel
 
     var frequency = 0.0
+    var lastFIP1U = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -233,38 +236,7 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
             waitUntilFIToLoad()
             startPollFi()
             startFI()
-//            startVIUFI()
-            waitUntilFIToRun()
-
-//            sleepWhileRun(10)
-//            with(UZ92) {
-//                addCheckableDevice(this)
-//
-//                CM.startPoll(this, HPMontModel.OUTPUT_FREQUENCY_REGISTER) { value ->
-//                    testModel.measuredData.optimusF.value = (value.toDouble() / 100).autoformat()
-//                }
-//                CM.startPoll(this, HPMontModel.OUTPUT_VOLTAGE_REGISTER) { value ->
-//                    testModel.measuredData.optimusU.value = (value.toDouble()).autoformat()
-//                }
-//                CM.startPoll(this, HPMontModel.OUTPUT_CURRENT_REGISTER) { value ->
-//                    testModel.measuredData.optimusI.value = (value.toDouble() / 100).autoformat()
-//                }
-//            }
-//
-//            CM.device<HPMont>(UZ92).setObjectParams()
-//            sleepWhileRun(3)
-//            CM.device<HPMont>(UZ92).setRunningFrequency(50.0)
-//            sleepWhileRun(3)
-//            CM.device<HPMont>(UZ92).startObject()
-//            sleepWhileRun(3)
-//            var voltage = 1.0
-//            while (voltage < 50.0 && isRunning) {
-//                voltage++
-//                sleep(100)
-//                CM.device<HPMont>(UZ92).setObjectU(voltage)
-//            }
-//            sleepWhileRun(100)
-//            CM.device<HPMont>(UZ92).stopObject()
+            regulateVoltage(specifiedU = 380.0, minPercent = 0.5, step = 1.0)
         }
 
         if (isRunning) {
@@ -277,10 +249,8 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
         if (isRunning) {
             returnAmperageStage()
         }
-//        stopVIUFi()
-//        stopFi()
         CM.device<Optimus>(UZ91).stopObjectNaVibege()
-        sleep(3)
+        sleep(3000)
     }
 
     private fun turnOnCircuit() {
@@ -298,7 +268,7 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
 
     private fun startFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        CM.device<Optimus>(UZ91).setObjectParamsRun(380.0) //todo 220?
+        CM.device<Optimus>(UZ91).setObjectParamsRun(380.0)
         if (isRunning) {
             frequency = 0.0
             sleepWhileRun(3)
@@ -312,11 +282,38 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
             sleep(100)
             CM.device<Optimus>(UZ91).setObjectFCur(frequency)
         }
+        if (isRunning) {
+            frequency = 50.0
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+    }
+
+    private fun regulateVoltage(
+        specifiedU: Double,
+        minPercent: Double,
+        maxPercent: Double = minPercent,
+        step: Double,
+        wait: Long = 400L
+    ) {
+        val min = specifiedU * (100.0 - minPercent) / 100.0
+        val max = specifiedU * (100.0 + maxPercent) / 100.0
+
+        lastFIP1U = testModel.measuredData.optimusV4.value.replace(",", ".").toDouble()
+        while (isRunning && (testModel.measuredU < min || testModel.measuredU > max)) {
+            if (testModel.measuredU < min) {
+                lastFIP1U += step
+            }
+            if (testModel.measuredU > max) {
+                lastFIP1U -= step
+            }
+            CM.device<Optimus>(UZ91).setObjectUMax(lastFIP1U)
+            sleep(wait)
+        }
     }
 
     private fun startVIUFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        CM.device<Optimus>(UZ91).setObjectParamsVIU()
+        CM.device<Optimus>(UZ91).setObjectParamsVIUandMVZ()
         sleepWhileRun(3)
 
         if (isRunning) {
@@ -365,12 +362,12 @@ class Idle : KSPADTest(view = IdleView::class, reportTemplate = "idle.xlsx") {
                 CM.device<PR>(DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_30_TO_5
                 sleepWhileRun(3)
-                if (isRunning && testModel.measuredI < 5) {
-                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-                    CM.device<PR>(DD2).onMinAmperageStage()
-                    CM.device<PR>(DD2).off30to5Amperage()
-                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
-                }
+//                if (isRunning && testModel.measuredI < 5) {
+//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+//                    CM.device<PR>(DD2).onMinAmperageStage()
+//                    CM.device<PR>(DD2).off30to5Amperage()
+//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+//                }
             }
         }
     }

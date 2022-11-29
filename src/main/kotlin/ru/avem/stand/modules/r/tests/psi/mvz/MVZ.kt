@@ -5,7 +5,11 @@ import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
 import ru.avem.stand.modules.r.communication.model.devices.delta.c2000.C2000
+import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
+import ru.avem.stand.modules.r.communication.model.devices.optimus.OptimusModel
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
+import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202
+import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
 import ru.avem.stand.modules.r.communication.model.devices.satec.pm130.PM130Model
 import ru.avem.stand.modules.r.tests.AmperageStage
 import ru.avem.stand.modules.r.tests.KSPADTest
@@ -21,6 +25,9 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
     override val name = "Испытание электрической прочности междувитковой изоляции обмоток"
 
     override val testModel = MVZModel
+
+    var frequency = 0.0
+    var lastFIP1U = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -102,10 +109,12 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
                             testModel.measuredDataBefore.UAB.value = value.toDouble().autoformat()
                             testModel.measuredDataBefore.U.value = testModel.measuredU.autoformat()
                         }
+
                         MVZModel.Stage.DURING -> {
                             testModel.measuredDataDuring.UAB.value = value.toDouble().autoformat()
                             testModel.measuredDataDuring.U.value = testModel.measuredU.autoformat()
                         }
+
                         MVZModel.Stage.AFTER -> {
                             testModel.measuredDataAfter.UAB.value = value.toDouble().autoformat()
                             testModel.measuredDataAfter.U.value = testModel.measuredU.autoformat()
@@ -120,10 +129,12 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
                             testModel.measuredDataBefore.UBC.value = value.toDouble().autoformat()
                             testModel.measuredDataBefore.U.value = testModel.measuredU.autoformat()
                         }
+
                         MVZModel.Stage.DURING -> {
                             testModel.measuredDataDuring.UBC.value = value.toDouble().autoformat()
                             testModel.measuredDataDuring.U.value = testModel.measuredU.autoformat()
                         }
+
                         MVZModel.Stage.AFTER -> {
                             testModel.measuredDataAfter.UBC.value = value.toDouble().autoformat()
                             testModel.measuredDataAfter.U.value = testModel.measuredU.autoformat()
@@ -138,10 +149,12 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
                             testModel.measuredDataBefore.UCA.value = value.toDouble().autoformat()
                             testModel.measuredDataBefore.U.value = testModel.measuredU.autoformat()
                         }
+
                         MVZModel.Stage.DURING -> {
                             testModel.measuredDataDuring.UCA.value = value.toDouble().autoformat()
                             testModel.measuredDataDuring.U.value = testModel.measuredU.autoformat()
                         }
+
                         MVZModel.Stage.AFTER -> {
                             testModel.measuredDataAfter.UCA.value = value.toDouble().autoformat()
                             testModel.measuredDataAfter.U.value = testModel.measuredU.autoformat()
@@ -157,10 +170,12 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
                             testModel.measuredDataBefore.IA.value = testModel.measuredIA.autoformat()
                             testModel.measuredDataBefore.I.value = testModel.measuredI.autoformat()
                         }
+
                         MVZModel.Stage.DURING -> {
                             testModel.measuredDataDuring.IA.value = testModel.measuredIA.autoformat()
                             testModel.measuredDataDuring.I.value = testModel.measuredI.autoformat()
                         }
+
                         MVZModel.Stage.AFTER -> {
                             testModel.measuredDataAfter.IA.value = testModel.measuredIA.autoformat()
                             testModel.measuredDataAfter.I.value = testModel.measuredI.autoformat()
@@ -175,10 +190,12 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
                             testModel.measuredDataBefore.IB.value = testModel.measuredIB.autoformat()
                             testModel.measuredDataBefore.I.value = testModel.measuredI.autoformat()
                         }
+
                         MVZModel.Stage.DURING -> {
                             testModel.measuredDataDuring.IB.value = testModel.measuredIB.autoformat()
                             testModel.measuredDataDuring.I.value = testModel.measuredI.autoformat()
                         }
+
                         MVZModel.Stage.AFTER -> {
                             testModel.measuredDataAfter.IB.value = testModel.measuredIB.autoformat()
                             testModel.measuredDataAfter.I.value = testModel.measuredI.autoformat()
@@ -193,10 +210,12 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
                             testModel.measuredDataBefore.IC.value = testModel.measuredIC.autoformat()
                             testModel.measuredDataBefore.I.value = testModel.measuredI.autoformat()
                         }
+
                         MVZModel.Stage.DURING -> {
                             testModel.measuredDataDuring.IC.value = testModel.measuredIC.autoformat()
                             testModel.measuredDataDuring.I.value = testModel.measuredI.autoformat()
                         }
+
                         MVZModel.Stage.AFTER -> {
                             testModel.measuredDataAfter.IC.value = testModel.measuredIC.autoformat()
                             testModel.measuredDataAfter.I.value = testModel.measuredI.autoformat()
@@ -220,11 +239,13 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
         if (isRunning) {
             waitUntilFIToLoad()
             startFI()
-            waitUntilFIToRun()
+            lastFIP1U = 380.0 / 1.3
         }
         if (isRunning) {
+            appendMessageToLog(LogTag.INFO, "Грубая регулировка до ${testModel.specifiedU}В")
+            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 3.0, step = 2.0)
             appendMessageToLog(LogTag.INFO, "Точная регулировка до ${testModel.specifiedU}В")
-            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 0.0, maxPercent = 1.0, step = 0.1)
+            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 0.0, maxPercent = 1.0, step = 1.0)
             testModel.beforeFIP1U = testModel.lastFIP1U
         }
         if (isRunning) {
@@ -238,9 +259,9 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
         }
         if (isRunning) {
             appendMessageToLog(LogTag.INFO, "Грубая регулировка до ${testModel.specifiedU * 1.3}В")
-            regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 3.0, step = 1.0)
+            regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 3.0, step = 2.0)
             appendMessageToLog(LogTag.INFO, "Точная регулировка до ${testModel.specifiedU * 1.3}В")
-            regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 0.0, maxPercent = 1.0, step = 0.1)
+            regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 0.0, maxPercent = 1.0, step = 1.0)
         }
         if (isRunning) {
             selectAmperageStage()
@@ -256,7 +277,10 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
         }
         if (isRunning) {
             testModel.lastFIP1U = testModel.beforeFIP1U
-            CM.device<C2000>(UZ91).setObjectUMax(testModel.lastFIP1U)
+            appendMessageToLog(LogTag.INFO, "Грубая регулировка до ${testModel.specifiedU}В")
+            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 3.0, step = 2.0)
+            appendMessageToLog(LogTag.INFO, "Точная регулировка до ${testModel.specifiedU}В")
+            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 0.0, maxPercent = 1.0, step = 1.0)
             sleepWhileRun(3)
         }
         if (isRunning) {
@@ -266,8 +290,9 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
             sleepWhileRun(2)
             storeTestValues()
             returnAmperageStage()
-            stopFI(CM.device(UZ91))
         }
+        CM.device<Optimus>(UZ91).stopObjectNaVibege()
+        sleep(3000)
     }
 
     private fun toStage(stage: MVZModel.Stage) {
@@ -278,36 +303,34 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
     private fun turnOnCircuit() {
         appendMessageToLog(LogTag.INFO, "Сбор схемы")
         CM.device<PR>(DD2).onStart()
-        sleep(200)
-        CM.device<PR>(DD2).onMaxAmperageStage()
+        sleep(1000)
+        CM.device<PR>(DD2).onVD()
         testModel.amperageStage = AmperageStage.FROM_500_TO_5
-        sleep(200)
-        CM.device<PR>(DD2).onKTR()
-        sleep(200)
-        CM.device<PR>(DD2).on30to5Amperage()
-        sleep(200)
-        if (isFirstPlatform) {
-            CM.device<PR>(DD2).onU()
-        } else {
-            CM.device<PR>(DD2).onVD()
-        }
-        sleep(200)
+        sleep(1000)
+        CM.device<PR>(DD2).onU()
+        sleep(1000)
+        CM.device<PR>(DD2).onMaxAmperageStage()
+        sleep(1000)
     }
 
     private fun startFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        testModel.lastFIP1U = (testModel.specifiedU / ((220.0 + 80.0) * sqrt(3.0) / 380.0)) * 0.95 //%
-        CM.device<C2000>(UZ91).setObjectParams(
-            fOut = testModel.specifiedF,
-
-            voltageP1 = testModel.lastFIP1U,
-            fP1 = testModel.specifiedF,
-
-            voltageP2 = 1,
-            fP2 = 1
-        )
-        CM.device<C2000>(UZ91).startObject()
+        CM.device<Optimus>(UZ91).setObjectParamsRun(380.0 / 1.4)
+        if (isRunning) {
+            frequency = 0.0
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+            sleepWhileRun(3)
+            CM.device<Optimus>(UZ91).startObject()
+            sleepWhileRun(3)
+        }
+        while (frequency < 50.0 && isRunning) {
+            frequency += 0.3
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
     }
+
 
     private fun regulateVoltage(
         specifiedU: Double,
@@ -321,30 +344,36 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
 
         while (isRunning && (testModel.measuredU < min || testModel.measuredU > max)) {
             if (testModel.measuredU < min) {
-                testModel.lastFIP1U += step
+                lastFIP1U += step
             }
             if (testModel.measuredU > max) {
-                testModel.lastFIP1U -= step
+                lastFIP1U -= step
             }
-            CM.device<C2000>(UZ91).setObjectUMax(testModel.lastFIP1U)
+            CM.device<Optimus>(UZ91).setObjectUMax(lastFIP1U)
             sleep(wait)
         }
     }
 
     private fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
-        if (isRunning && testModel.measuredI < 30) {
-            appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+        if (isRunning && testModel.measuredI < 100) {
+            appendMessageToLog(LogTag.INFO, "Переключение на 100/5")
             CM.device<PR>(DD2).on100To5AmperageStage()
             CM.device<PR>(DD2).offMaxAmperageStage()
             testModel.amperageStage = AmperageStage.FROM_100_TO_5
             sleepWhileRun(3)
-            if (isRunning && testModel.measuredI < 4) {
-                appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-                CM.device<PR>(DD2).onMinAmperageStage()
+            if (isRunning && testModel.measuredI < 30) {
+                appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
+                CM.device<PR>(DD2).on30to5Amperage()
                 CM.device<PR>(DD2).off100To5AmperageStage()
-                testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                testModel.amperageStage = AmperageStage.FROM_30_TO_5
                 sleepWhileRun(3)
+//                if (isRunning && testModel.measuredI < 5) {
+//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+//                    CM.device<PR>(DD2).onMinAmperageStage()
+//                    CM.device<PR>(DD2).off30to5Amperage()
+//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+//                }
             }
         }
     }
