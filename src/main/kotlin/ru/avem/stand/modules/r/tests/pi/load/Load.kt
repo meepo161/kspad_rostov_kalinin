@@ -8,6 +8,7 @@ import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMont
 import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel
 import ru.avem.stand.modules.r.communication.model.devices.optimus.Optimus
 import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PR
+import ru.avem.stand.modules.r.communication.model.devices.owen.pr.PRModel
 import ru.avem.stand.modules.r.communication.model.devices.owen.th01.TH01Model
 import ru.avem.stand.modules.r.communication.model.devices.owen.trm202.TRM202Model
 import ru.avem.stand.modules.r.communication.model.devices.satec.pm130.PM130Model
@@ -26,7 +27,7 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
-    override val name = "Испытание на нагрев"
+    override val name = "Испытание под нагрузкой"
 
     override val testModel = LoadModel
 
@@ -84,12 +85,12 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
             testModel.measuredData.F.value = ""
 
             testModel.measuredData.v1x.value = ""
-            testModel.measuredData.v1y.value = ""
-            testModel.measuredData.v1z.value = ""
+//            testModel.measuredData.v1y.value = ""
+//            testModel.measuredData.v1z.value = ""
 
             testModel.measuredData.v2x.value = ""
-            testModel.measuredData.v2y.value = ""
-            testModel.measuredData.v2z.value = ""
+//            testModel.measuredData.v2y.value = ""
+//            testModel.measuredData.v2z.value = ""
 
             testModel.measuredData.RPM.value = ""
             testModel.measuredData.tempAmb.value = ""
@@ -189,6 +190,19 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
                 CM.startPoll(this, TRM202Model.T_2) { value ->
                     testModel.tempTI = value.toDouble()
                     testModel.measuredData.tempTI.value = testModel.tempTI.autoformat()
+                }
+            }
+        }
+
+        if (isRunning) {
+            with(CM.DeviceID.DD2) {
+                addCheckableDevice(this)
+
+                CM.startPoll(this, PRModel.AI_01_F) { value ->
+                    testModel.measuredData.v1x.value = value.toDouble().autoformat()
+                }
+                CM.startPoll(this, PRModel.AI_02_F) { value ->
+                    testModel.measuredData.v2x.value = value.toDouble().autoformat()
                 }
             }
         }
@@ -528,11 +542,11 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         testModel.storedData.cos.value = testModel.measuredData.cos.value
 
         testModel.storedData.v1x.value = testModel.measuredData.v1x.value
-        testModel.storedData.v1y.value = testModel.measuredData.v1y.value
-        testModel.storedData.v1z.value = testModel.measuredData.v1z.value
+//        testModel.storedData.v1y.value = testModel.measuredData.v1y.value
+//        testModel.storedData.v1z.value = testModel.measuredData.v1z.value
         testModel.storedData.v2x.value = testModel.measuredData.v2x.value
-        testModel.storedData.v2y.value = testModel.measuredData.v2y.value
-        testModel.storedData.v2z.value = testModel.measuredData.v2z.value
+//        testModel.storedData.v2y.value = testModel.measuredData.v2y.value
+//        testModel.storedData.v2z.value = testModel.measuredData.v2z.value
 
         testModel.storedData.RPM.value = testModel.measuredData.RPM.value
         testModel.storedData.tempAmb.value = testModel.measuredData.tempAmb.value
@@ -585,11 +599,11 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         testModel.measuredData.cos.value = testModel.storedData.cos.value
 
         testModel.measuredData.v1x.value = testModel.storedData.v1x.value
-        testModel.measuredData.v1y.value = testModel.storedData.v1y.value
-        testModel.measuredData.v1z.value = testModel.storedData.v1z.value
+//        testModel.measuredData.v1y.value = testModel.storedData.v1y.value
+//        testModel.measuredData.v1z.value = testModel.storedData.v1z.value
         testModel.measuredData.v2x.value = testModel.storedData.v2x.value
-        testModel.measuredData.v2y.value = testModel.storedData.v2y.value
-        testModel.measuredData.v2z.value = testModel.storedData.v2z.value
+//        testModel.measuredData.v2y.value = testModel.storedData.v2y.value
+//        testModel.measuredData.v2z.value = testModel.storedData.v2z.value
 
         testModel.measuredData.RPM.value = testModel.storedData.RPM.value
         testModel.measuredData.tempAmb.value = testModel.storedData.tempAmb.value
@@ -625,11 +639,11 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         reportFields["TEMP_TI_LOAD"] = testModel.measuredData.tempTI.value
 
         reportFields["X_31_TEMP_TI_LOAD"] = testModel.measuredData.v1x.value
-        reportFields["Y_31_TEMP_TI_LOAD"] = testModel.measuredData.v1y.value
-        reportFields["Z_31_TEMP_TI_LOAD"] = testModel.measuredData.v1z.value
+//        reportFields["Y_31_TEMP_TI_LOAD"] = testModel.measuredData.v1y.value
+//        reportFields["Z_31_TEMP_TI_LOAD"] = testModel.measuredData.v1z.value
         reportFields["X_32_TEMP_TI_LOAD"] = testModel.measuredData.v2x.value
-        reportFields["Y_32_TEMP_TI_LOAD"] = testModel.measuredData.v2y.value
-        reportFields["Z_32_TEMP_TI_LOAD"] = testModel.measuredData.v2z.value
+//        reportFields["Y_32_TEMP_TI_LOAD"] = testModel.measuredData.v2y.value
+//        reportFields["Z_32_TEMP_TI_LOAD"] = testModel.measuredData.v2z.value
 
         reportFields["TOTAL_P1_LOAD"] = testModel.measuredData.P1.value
         reportFields["TOTAL_PF_LOAD"] = testModel.measuredData.cos.value

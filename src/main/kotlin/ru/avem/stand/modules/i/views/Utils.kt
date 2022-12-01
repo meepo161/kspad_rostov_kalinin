@@ -88,6 +88,22 @@ fun showSaveDialogConfirmation(currentWindow: Window?) {
     }
 }
 
+fun showDialogConfirmation(currentWindow: Window?) {
+    confirmation(
+        "Внимание",
+        "Нажмите Ок и проверните двигатель на 360 градусов",
+        ButtonType("Ок"),
+        title = "Внимание",
+        owner = currentWindow
+    ) { buttonType ->
+        when (buttonType.text) {
+            "Ок" -> {
+            }
+        }
+    }
+}
+
+
 fun showTwoWayDialog(
     title: String,
     text: String,

@@ -1,14 +1,10 @@
-package ru.avem.stand.modules.r.tests.pi.load
+package ru.avem.stand.modules.r.tests.pi.rod
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 
-data class LoadData(
+data class RodData(
     val descriptor: StringProperty,
-
-    val R1: StringProperty = SimpleStringProperty(""),
-    val R2: StringProperty = SimpleStringProperty(""),
-    val R3: StringProperty = SimpleStringProperty(""),
 
     val U: StringProperty = SimpleStringProperty(""),
     val UAB: StringProperty = SimpleStringProperty(""),
@@ -18,11 +14,10 @@ data class LoadData(
     val IA: StringProperty = SimpleStringProperty(""),
     val IB: StringProperty = SimpleStringProperty(""),
     val IC: StringProperty = SimpleStringProperty(""),
-    val cos: StringProperty = SimpleStringProperty(""),
+
     val P1: StringProperty = SimpleStringProperty(""),
     val F: StringProperty = SimpleStringProperty(""),
-    val efficiency: StringProperty = SimpleStringProperty(""),
-    val sk: StringProperty = SimpleStringProperty(""),
+    val cos: StringProperty = SimpleStringProperty(""),
 
     val v1: StringProperty = SimpleStringProperty("Вибро (полевая сторона) PG31"),
     val v1x: StringProperty = SimpleStringProperty(""),
@@ -38,15 +33,20 @@ data class LoadData(
     val tempAmb: StringProperty = SimpleStringProperty(""),
     val tempTI: StringProperty = SimpleStringProperty(""),
 
-    val R0After: StringProperty = SimpleStringProperty(""),
-    val R1After: StringProperty = SimpleStringProperty(""),
-    val R1TimeAfter: StringProperty = SimpleStringProperty(""),
-    val R2After: StringProperty = SimpleStringProperty(""),
-    val R2TimeAfter: StringProperty = SimpleStringProperty(""),
-    val R3After: StringProperty = SimpleStringProperty(""),
-    val R3TimeAfter: StringProperty = SimpleStringProperty(""),
-    val T0After: StringProperty = SimpleStringProperty(""),
-
     val time: StringProperty = SimpleStringProperty(""),
     val result: StringProperty = SimpleStringProperty(""),
+
+    val optimusU: StringProperty = SimpleStringProperty(""),
+    val optimusI: StringProperty = SimpleStringProperty(""),
+    val optimusF: StringProperty = SimpleStringProperty(""),
+    val optimusV1: StringProperty = SimpleStringProperty(""),
+    val optimusV2: StringProperty = SimpleStringProperty(""),
+    val optimusV3: StringProperty = SimpleStringProperty(""),
+    val optimusV4: StringProperty = SimpleStringProperty(""),
+    val optimusV5: StringProperty = SimpleStringProperty(""),
+    val optimusF1: StringProperty = SimpleStringProperty(""),
+    val optimusF2: StringProperty = SimpleStringProperty(""),
+    val optimusF3: StringProperty = SimpleStringProperty(""),
+    val optimusF4: StringProperty = SimpleStringProperty(""),
+    val optimusF5: StringProperty = SimpleStringProperty(""),
 )

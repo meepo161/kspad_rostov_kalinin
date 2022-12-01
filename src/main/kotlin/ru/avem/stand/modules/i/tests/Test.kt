@@ -208,7 +208,7 @@ abstract class Test(
 
     abstract fun logic()
 
-    protected fun sleepWhileRun(
+    protected fun sleepWhileRunOld(
         timeSecond: Int,
         progressProperty: DoubleProperty? = null,
         isNeedContinue: () -> Boolean = { true }
@@ -225,6 +225,26 @@ abstract class Test(
         if (isNeedContinue()) {
             runLater {
                 progressProperty?.value = -1.0
+            }
+        }
+    }
+
+    protected fun sleepWhileRun(timeSecond: Number, progressProperty: DoubleProperty? = null, isNeedContinue: () -> Boolean = { true }) {
+        val startStamp = System.currentTimeMillis()
+        while (isRunning && isNeedContinue()) {
+            val progress = (System.currentTimeMillis() - startStamp) / (timeSecond.toDouble() * 1000)
+            if (progress < 1.0) {
+                    runLater {
+                        progressProperty?.value = 1.0 - progress
+                    }
+                sleep(100)
+            } else {
+                if (isNeedContinue()) {
+                    runLater {
+                        progressProperty?.value = -1.0
+                    }
+                }
+                break
             }
         }
     }
@@ -285,6 +305,29 @@ abstract class Test(
 
     fun stop() {
         cause = "отменено оператором"
+    }
+
+    fun showOKCancelDialog(
+        title: String = "Внимание",
+        text: String,
+        way1Text: String = "ОК",
+        way2Text: String = "Отмена"
+    ) {
+        try {
+            showTwoWayDialog(
+                title,
+                text,
+                way1Text,
+                way2Text,
+                { },
+                { },
+                1_200_000,
+                { false },
+                find(view).currentWindow!!
+            )
+        } catch (e: Exception) {
+            cause = "диалог не был обработан в течение 20 минут"
+        }
     }
 
     override fun toString() = "$order. $name"

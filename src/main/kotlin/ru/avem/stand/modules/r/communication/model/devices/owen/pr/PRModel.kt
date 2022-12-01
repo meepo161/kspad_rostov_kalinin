@@ -73,9 +73,11 @@ class PRModel : IDeviceModel {
         DO_17_32_ERROR_S1_MASK_0 to DeviceRegister(556, DeviceRegister.RegisterValueType.SHORT),
         DO_17_32_ERROR_S1_MASK_1 to DeviceRegister(555, DeviceRegister.RegisterValueType.SHORT),
 
-        AI_01_F to DeviceRegister(531, DeviceRegister.RegisterValueType.FLOAT), // CDAB
-        AI_02_F to DeviceRegister(533, DeviceRegister.RegisterValueType.FLOAT), // CDAB
-        AO_01_F to DeviceRegister(539, DeviceRegister.RegisterValueType.FLOAT), // CDAB
+        AI_01_F to DeviceRegister(531, DeviceRegister.RegisterValueType.FLOAT),
+
+        AI_02_F to DeviceRegister(533, DeviceRegister.RegisterValueType.FLOAT),
+
+        AO_01_F to DeviceRegister(539, DeviceRegister.RegisterValueType.FLOAT),
     )
 
     override fun getRegisterById(idRegister: String) =

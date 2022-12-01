@@ -21,13 +21,13 @@ data class IdleData(
 
     val v1: StringProperty = SimpleStringProperty("Вибро (полевая сторона) PG31"),
     val v1x: StringProperty = SimpleStringProperty(""),
-    val v1y: StringProperty = SimpleStringProperty(""),
-    val v1z: StringProperty = SimpleStringProperty(""),
+//    val v1y: StringProperty = SimpleStringProperty(""),
+//    val v1z: StringProperty = SimpleStringProperty(""),
 
     val v2: StringProperty = SimpleStringProperty("Вибро (рабочая сторона) PG32"),
     val v2x: StringProperty = SimpleStringProperty(""),
-    val v2y: StringProperty = SimpleStringProperty(""),
-    val v2z: StringProperty = SimpleStringProperty(""),
+//    val v2y: StringProperty = SimpleStringProperty(""),
+//    val v2z: StringProperty = SimpleStringProperty(""),
 
     val RPM: StringProperty = SimpleStringProperty(""),
     val tempAmb: StringProperty = SimpleStringProperty(""),

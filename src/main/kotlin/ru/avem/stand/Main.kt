@@ -13,6 +13,7 @@ import ru.avem.stand.modules.r.tests.pi.maxm.MaxM
 import ru.avem.stand.modules.r.tests.pi.minm.MinM
 import ru.avem.stand.modules.r.tests.pi.overi.OverI
 import ru.avem.stand.modules.r.tests.pi.overm.OverM
+import ru.avem.stand.modules.r.tests.pi.rod.Rod
 import ru.avem.stand.modules.r.tests.pi.startmi.StartMI
 import ru.avem.stand.modules.r.tests.pi.varyuf.VaryUF
 import ru.avem.stand.modules.r.tests.psi.hv.HV
@@ -33,13 +34,14 @@ val head = head {
             MVZ(),
             KZ(),
             Load(),
-            OverM(),
-            OverI(),
-            VaryUF(),
+//            OverM(),
+//            OverI(),
+//            VaryUF(),
             IncN(),
-            StartMI(),
-            MaxM(),
-            MinM()
+            Rod(),
+//            StartMI(),
+//            MaxM(),
+//            MinM()
         )
     }
     views {

@@ -3,6 +3,8 @@ package ru.avem.stand.modules.r.communication.model.devices.owen.pr
 import ru.avem.kserialpooler.communication.adapters.modbusrtu.ModbusRTUAdapter
 import ru.avem.kserialpooler.communication.adapters.utils.ModbusRegister
 import ru.avem.kserialpooler.communication.utils.TransportException
+import ru.avem.kserialpooler.communication.utils.TypeByteOrder
+import ru.avem.kserialpooler.communication.utils.allocateOrderedByteBuffer
 import ru.avem.stand.modules.r.communication.model.DeviceController
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
 import java.lang.Thread.sleep
@@ -77,9 +79,20 @@ class PR(
     override fun readRegister(register: DeviceRegister) {
         isResponding = try {
             transactionWithAttempts {
-                val modbusRegister =
-                    protocolAdapter.readHoldingRegisters(id, register.address, 1).map(ModbusRegister::toShort)
-                register.value = modbusRegister.first()
+                when (register.valueType) {
+                    DeviceRegister.RegisterValueType.SHORT -> {
+                        val value =
+                            protocolAdapter.readHoldingRegisters(id, register.address, 1).first().toShort()
+                        register.value = value
+                    }
+
+                    DeviceRegister.RegisterValueType.FLOAT -> {
+                        val modbusRegister =
+                            protocolAdapter.readInputRegisters(id, register.address, 2).map(ModbusRegister::toShort)
+                        register.value =
+                            allocateOrderedByteBuffer(modbusRegister, TypeByteOrder.MID_LITTLE_ENDIAN, 4).float
+                    }
+                }
             }
             true
         } catch (e: TransportException) {
@@ -194,6 +207,7 @@ class PR(
         onOutput01To16(8)
         sleep(3000)
         offOutput01To16(8)
+        offOutput01To16(7)
     }
 
     fun onVIU() {
