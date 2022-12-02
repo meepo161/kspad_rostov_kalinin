@@ -1,8 +1,6 @@
-package ru.avem.stand.modules.r.tests.pi.rod
+package ru.avem.stand.modules.r.tests.pi.running
 
 import ru.avem.stand.modules.i.tests.LogTag
-import ru.avem.stand.modules.i.views.showDialogConfirmation
-import ru.avem.stand.modules.i.views.showOKDialog
 import ru.avem.stand.modules.r.common.prefill.PreFillModel
 import ru.avem.stand.modules.r.communication.model.CM
 import ru.avem.stand.modules.r.communication.model.CM.DeviceID.*
@@ -22,18 +20,15 @@ import ru.avem.stand.utils.toDoubleOrDefault
 import tornadofx.runLater
 import java.lang.Thread.sleep
 import kotlin.collections.set
-import kotlin.concurrent.thread
 import kotlin.math.abs
 
-class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
-    override val name =
-        "Проверка стерженей"
+class Running : KSPADTest(view = RunningView::class, reportTemplate = "running.xlsx") {
+    override val name = "Обкатка"
 
-    override val testModel = RodModel
+    override val testModel = RunningModel
 
     var frequency = 0.0
     var lastFIP1U = 0.0
-    var percent = 0.0
 
     override fun initVars() {
         super.initVars()
@@ -51,9 +46,10 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
         testModel.specifiedF = PreFillModel.testTypeProp.value.fields["F"]?.value.toDoubleOrDefault(0.0)
         testModel.specifiedScheme = PreFillModel.testTypeProp.value.fields["SCHEME"]?.value ?: "λ"
 
-        testModel.specifiedPercentRod =
-            PreFillModel.testTypeProp.value.fields["PERCENT_ROD"]?.value?.toDoubleOrDefault(0.0) ?: 0.0
-        testModel.specifiedTestTime = 10.0
+        testModel.specifiedRunningI =
+            PreFillModel.testTypeProp.value.fields["RUNNING_I"]?.value?.toDoubleOrDefault(0.0) ?: 0.0
+        testModel.specifiedTestTime =
+            PreFillModel.testTypeProp.value.fields["RUNNING_TIME"]?.value.toDoubleOrDefault(0.0)
     }
 
     override fun initView() {
@@ -108,15 +104,60 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
                                 + testModel.measuredData.UCA.value.toDoubleOrDefault(0.0)) / 3.0
                     testModel.measuredData.U.value = testModel.measuredU.autoformat()
                 }
+                CM.startPoll(this, PM130Model.U_BC_REGISTER) { value ->
+                    testModel.measuredData.UBC.value = value.toDouble().autoformat()
+                    testModel.measuredU =
+                        (testModel.measuredData.UAB.value.toDoubleOrDefault(0.0) + testModel.measuredData.UBC.value.toDoubleOrDefault(
+                            0.0
+                        ) + testModel.measuredData.UCA.value.toDoubleOrDefault(0.0)) / 3.0
+                    testModel.measuredData.U.value = testModel.measuredU.autoformat()
+                }
+                CM.startPoll(this, PM130Model.U_CA_REGISTER) { value ->
+                    testModel.measuredData.UCA.value = value.toDouble().autoformat()
+                    testModel.measuredU =
+                        (testModel.measuredData.UAB.value.toDoubleOrDefault(0.0) + testModel.measuredData.UBC.value.toDoubleOrDefault(
+                            0.0
+                        ) + testModel.measuredData.UCA.value.toDoubleOrDefault(0.0)) / 3.0
+                    testModel.measuredData.U.value = testModel.measuredU.autoformat()
+                }
 
                 CM.startPoll(this, PM130Model.I_A_REGISTER) { value ->
                     testModel.measuredIA = abs(value.toDouble() * testModel.amperageStage.ratio)
                     testModel.measuredData.IA.value = testModel.measuredIA.autoformat()
-                    testModel.measuredI = testModel.measuredIA
-                    if (testModel.isNeedCollectCurrents) {
-                        testModel.currents.add(testModel.measuredI)
-                    }
+                    testModel.measuredI = (testModel.measuredIA + testModel.measuredIB + testModel.measuredIC) / 3
                     testModel.measuredData.I.value = testModel.measuredI.autoformat()
+                }
+                CM.startPoll(this, PM130Model.I_B_REGISTER) { value ->
+                    testModel.measuredIB = abs(value.toDouble() * testModel.amperageStage.ratio)
+                    testModel.measuredData.IB.value = testModel.measuredIB.autoformat()
+                    testModel.measuredI = (testModel.measuredIA + testModel.measuredIB + testModel.measuredIC) / 3
+                    testModel.measuredData.I.value = testModel.measuredI.autoformat()
+                }
+                CM.startPoll(this, PM130Model.I_C_REGISTER) { value ->
+                    testModel.measuredIC = abs(value.toDouble() * testModel.amperageStage.ratio)
+                    testModel.measuredData.IC.value = testModel.measuredIC.autoformat()
+                    testModel.measuredI = (testModel.measuredIA + testModel.measuredIB + testModel.measuredIC) / 3
+                    testModel.measuredData.I.value = testModel.measuredI.autoformat()
+                }
+
+                CM.startPoll(this, PM130Model.COS_REGISTER) { value ->
+                    testModel.measuredData.cos.value = value.toDouble().autoformat()
+                }
+                CM.startPoll(this, PM130Model.P_REGISTER) { value ->
+                    testModel.measuredData.P1.value =
+                        abs(value.toDouble() * testModel.amperageStage.ratio).autoformat()
+                }
+                CM.startPoll(this, PM130Model.F_REGISTER) { value ->
+                    testModel.measuredData.F.value = value.toDouble().autoformat()
+                }
+            }
+        }
+
+        if (isRunning) {
+            with(PC71) {
+                addCheckableDevice(this)
+                CM.startPoll(this, TH01Model.RPM) { value ->
+                    testModel.measuredData.RPM.value = value.toDouble().autoformat()
                 }
             }
         }
@@ -130,6 +171,19 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
                 }
                 CM.startPoll(this, TRM202Model.T_2) { value ->
                     testModel.measuredData.tempTI.value = value.toDouble().autoformat()
+                }
+            }
+        }
+
+        if (isRunning) {
+            with(DD2) {
+                addCheckableDevice(this)
+
+                CM.startPoll(this, PRModel.AI_01_F) { value ->
+                    testModel.measuredData.v1x.value = value.toDouble().autoformat()
+                }
+                CM.startPoll(this, PRModel.AI_02_F) { value ->
+                    testModel.measuredData.v2x.value = value.toDouble().autoformat()
                 }
             }
         }
@@ -148,8 +202,37 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
                 CM.startPoll(this, OptimusModel.CURRENT_CURRENT_REGISTER) { value ->
                     testModel.measuredData.optimusI.value = (value.toDouble() / 10).autoformat()
                 }
+
+                CM.startPoll(this, OptimusModel.VOLTAGE_1_REGISTER) { value ->
+                    testModel.measuredData.optimusV1.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_2_REGISTER) { value ->
+                    testModel.measuredData.optimusV2.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_3_REGISTER) { value ->
+                    testModel.measuredData.optimusV3.value = (value.toDouble() / 10).autoformat()
+                }
                 CM.startPoll(this, OptimusModel.VOLTAGE_4_REGISTER) { value ->
                     testModel.measuredData.optimusV4.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.VOLTAGE_5_REGISTER) { value ->
+                    testModel.measuredData.optimusV5.value = (value.toDouble() / 10).autoformat()
+                }
+
+                CM.startPoll(this, OptimusModel.FREQUENCY_1_REGISTER) { value ->
+                    testModel.measuredData.optimusF1.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_2_REGISTER) { value ->
+                    testModel.measuredData.optimusF2.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_3_REGISTER) { value ->
+                    testModel.measuredData.optimusF3.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_4_REGISTER) { value ->
+                    testModel.measuredData.optimusF4.value = (value.toDouble() / 10).autoformat()
+                }
+                CM.startPoll(this, OptimusModel.FREQUENCY_5_REGISTER) { value ->
+                    testModel.measuredData.optimusF5.value = (value.toDouble() / 10).autoformat()
                 }
             }
         }
@@ -161,44 +244,23 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
         }
         if (isRunning) {
             waitUntilFIToLoad()
-//            startPollFi()
+            startPollFi()
             startFI()
+            regulateVoltage(specifiedU = 380.0, minPercent = 0.5, step = 1.0)
         }
 
         if (isRunning) {
             selectAmperageStage()
         }
-
         if (isRunning) {
-            sleepWhileRun(5)
-            testModel.currents = mutableListOf()
-            testModel.isNeedCollectCurrents = true
-            showOKCancelDialog("Проверните вал ОИ\n на 1 оборот за 15-20 секунд \nи после проворота нажмите ОК")
+            waiting()
         }
-
         storeTestValues()
-        testModel.isNeedCollectCurrents = false
-
         if (isRunning) {
             returnAmperageStage()
         }
-
-        if (isRunning) {
-            calculatePercent()
-        }
-        restoreTestValues()
         CM.device<Optimus>(UZ91).stopObjectNaVibege()
         sleep(3000)
-    }
-
-    private fun calculatePercent() {
-        val max = testModel.currents.maxOrNull()
-        val min = testModel.currents.minOrNull()
-        if (max == null || min == null) {
-            appendMessageToLog(LogTag.ERROR, "Не найдены точки")
-        } else {
-            percent = ((max - min) / max * 100)
-        }
     }
 
     private fun turnOnCircuit() {
@@ -216,14 +278,23 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
 
     private fun startFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        CM.device<Optimus>(UZ91).setObjectParamsRun(50.0)
+        CM.device<Optimus>(UZ91).setObjectParamsRun(380.0)
         if (isRunning) {
-            frequency = 50.0
+            frequency = 0.0
             sleepWhileRun(3)
             CM.device<Optimus>(UZ91).setObjectFCur(frequency)
             sleepWhileRun(3)
             CM.device<Optimus>(UZ91).startObject()
             sleepWhileRun(3)
+        }
+        while (frequency < 50.0 && isRunning) {
+            frequency += 0.1
+            sleep(100)
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
+        }
+        if (isRunning) {
+            frequency = 50.0
+            CM.device<Optimus>(UZ91).setObjectFCur(frequency)
         }
     }
 
@@ -287,7 +358,6 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
         sleep(2000)
     }
 
-
     fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
         if (isRunning && testModel.measuredI < 100) {
@@ -314,8 +384,8 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
     }
 
     private fun waiting() {
-        appendMessageToLog(LogTag.INFO, "Ожидание ${testModel.specifiedTestTime.toInt()} с...")
-        sleepWhileRun(testModel.specifiedTestTime.toInt(), progressProperty = testModel.progressProperty)
+        appendMessageToLog(LogTag.INFO, "Ожидание ${testModel.specifiedTestTime.toInt()} мин...")
+        sleepWhileRun(testModel.specifiedTestTime.toInt() * 60, progressProperty = testModel.progressProperty)
     }
 
     private fun storeTestValues() {
@@ -369,18 +439,9 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
     override fun result() {
         super.result()
 
-
-        appendMessageToLog(LogTag.ERROR, "percent " + percent.autoformat())
-        if (percent >= testModel.specifiedPercentRod) {
-            appendMessageToLog(LogTag.ERROR, "ΔI >= ${testModel.specifiedPercentRod}")
-        }
-
         if (!isSuccess) {
             testModel.measuredData.result.value = "Прервано"
             appendMessageToLog(LogTag.ERROR, "Испытание прервано по причине: $cause")
-        } else if (percent >= testModel.specifiedPercentRod) {
-            testModel.measuredData.result.value = "Не соответствует"
-            appendMessageToLog(LogTag.ERROR, "ΔI >= ${testModel.specifiedPercentRod}")
         } else {
             testModel.measuredData.result.value = "Соответствует"
             appendMessageToLog(LogTag.INFO, "Испытание завершено успешно")
@@ -426,7 +487,7 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
     }
 
     override fun saveProtocol() {
-        reportFields["TEST_NAME_ROD"] = name
+        reportFields["TEST_NAME_RUNNING"] = name
 
         reportFields["POWER"] = testModel.specifiedP.toString()
         reportFields["VOLTAGE_LIN"] = testModel.specifiedU.toString()
@@ -437,27 +498,27 @@ class Rod : KSPADTest(view = RodView::class, reportTemplate = "rod.xlsx") {
         reportFields["FREQ"] = testModel.specifiedF.toString()
         reportFields["SCHEME"] = testModel.specifiedScheme
 
-        reportFields["U_ROD"] = testModel.measuredData.U.value
-        reportFields["L1_U_ROD"] = testModel.measuredData.UAB.value
-        reportFields["L2_U_ROD"] = testModel.measuredData.UBC.value
-        reportFields["L3_U_ROD"] = testModel.measuredData.UCA.value
-        reportFields["I_ROD"] = testModel.measuredData.I.value
-        reportFields["L1_I_ROD"] = testModel.measuredData.IA.value
-        reportFields["L2_I_ROD"] = testModel.measuredData.IB.value
-        reportFields["L3_I_ROD"] = testModel.measuredData.IC.value
-        reportFields["TOTAL_P_ROD"] = testModel.measuredData.P1.value
-        reportFields["TOTAL_PF_ROD"] = testModel.measuredData.cos.value
-        reportFields["F_ROD"] = testModel.measuredData.F.value
-        reportFields["X_31_ROD"] = testModel.measuredData.v1x.value
-//        reportFields["Y_31_ROD"] = testModel.measuredData.v1y.value
-//        reportFields["Z_31_ROD"] = testModel.measuredData.v1z.value
-        reportFields["X_32_ROD"] = testModel.measuredData.v2x.value
-//        reportFields["Y_32_ROD"] = testModel.measuredData.v2y.value
-//        reportFields["Z_32_ROD"] = testModel.measuredData.v2z.value
-        reportFields["RPM_ROD"] = testModel.measuredData.RPM.value
-        reportFields["TEMP_AMB_ROD"] = testModel.measuredData.tempAmb.value
-        reportFields["TEMP_OI_ROD"] = testModel.measuredData.tempTI.value
-        reportFields["RESULT_ROD"] = testModel.measuredData.result.value
+        reportFields["U_RUNNING"] = testModel.measuredData.U.value
+        reportFields["L1_U_RUNNING"] = testModel.measuredData.UAB.value
+        reportFields["L2_U_RUNNING"] = testModel.measuredData.UBC.value
+        reportFields["L3_U_RUNNING"] = testModel.measuredData.UCA.value
+        reportFields["I_RUNNING"] = testModel.measuredData.I.value
+        reportFields["L1_I_RUNNING"] = testModel.measuredData.IA.value
+        reportFields["L2_I_RUNNING"] = testModel.measuredData.IB.value
+        reportFields["L3_I_RUNNING"] = testModel.measuredData.IC.value
+        reportFields["TOTAL_P_RUNNING"] = testModel.measuredData.P1.value
+        reportFields["TOTAL_PF_RUNNING"] = testModel.measuredData.cos.value
+        reportFields["F_RUNNING"] = testModel.measuredData.F.value
+        reportFields["X_31_RUNNING"] = testModel.measuredData.v1x.value
+//        reportFields["Y_31_RUNNING"] = testModel.measuredData.v1y.value
+//        reportFields["Z_31_RUNNING"] = testModel.measuredData.v1z.value
+        reportFields["X_32_RUNNING"] = testModel.measuredData.v2x.value
+//        reportFields["Y_32_RUNNING"] = testModel.measuredData.v2y.value
+//        reportFields["Z_32_RUNNING"] = testModel.measuredData.v2z.value
+        reportFields["RPM_RUNNING"] = testModel.measuredData.RPM.value
+        reportFields["TEMP_AMB_RUNNING"] = testModel.measuredData.tempAmb.value
+        reportFields["TEMP_OI_RUNNING"] = testModel.measuredData.tempTI.value
+        reportFields["RESULT_RUNNING"] = testModel.measuredData.result.value
 
         super.saveProtocol()
     }

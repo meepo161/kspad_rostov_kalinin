@@ -1,8 +1,9 @@
 package ru.avem.stand.modules.r.communication.model
 
 import mu.KotlinLogging
-import ru.avem.kserialpooler.communication.adapters.AdapterInterface
-import ru.avem.kserialpooler.communication.utils.TransportException
+import ch.qos.logback.classic.Logger
+import ru.avem.kserialpooler.adapters.AdapterInterface
+import ru.avem.kserialpooler.utils.TransportException
 import java.lang.Thread.sleep
 
 interface IDeviceController {

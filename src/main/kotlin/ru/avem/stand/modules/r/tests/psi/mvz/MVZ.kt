@@ -238,8 +238,8 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
         }
         if (isRunning) {
             waitUntilFIToLoad()
+            lastFIP1U = 380.0 / 1.5
             startFI()
-            lastFIP1U = 380.0 / 1.3
         }
         if (isRunning) {
             appendMessageToLog(LogTag.INFO, "Грубая регулировка до ${testModel.specifiedU}В")
@@ -261,7 +261,7 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
             appendMessageToLog(LogTag.INFO, "Грубая регулировка до ${testModel.specifiedU * 1.3}В")
             regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 3.0, step = 2.0)
             appendMessageToLog(LogTag.INFO, "Точная регулировка до ${testModel.specifiedU * 1.3}В")
-            regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 0.0, maxPercent = 1.0, step = 1.0)
+            regulateVoltage(specifiedU = testModel.specifiedU * 1.3, minPercent = 1.0, maxPercent = 1.0, step = 1.0)
         }
         if (isRunning) {
             selectAmperageStage()
@@ -280,7 +280,7 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
             appendMessageToLog(LogTag.INFO, "Грубая регулировка до ${testModel.specifiedU}В")
             regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 3.0, step = 2.0)
             appendMessageToLog(LogTag.INFO, "Точная регулировка до ${testModel.specifiedU}В")
-            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 0.0, maxPercent = 1.0, step = 1.0)
+            regulateVoltage(specifiedU = testModel.specifiedU, minPercent = 0.0, maxPercent = 2.0, step = 1.0)
             sleepWhileRun(3)
         }
         if (isRunning) {
@@ -315,7 +315,7 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
 
     private fun startFI() {
         appendMessageToLog(LogTag.INFO, "Разгон ЧП...")
-        CM.device<Optimus>(UZ91).setObjectParamsRun(380.0 / 1.4)
+        CM.device<Optimus>(UZ91).setObjectParamsRun(lastFIP1U)
         if (isRunning) {
             frequency = 0.0
             sleepWhileRun(3)
@@ -361,19 +361,20 @@ class MVZ : KSPADTest(view = MVZView::class, reportTemplate = "mvz.xlsx") {
             CM.device<PR>(DD2).on100To5AmperageStage()
             CM.device<PR>(DD2).offMaxAmperageStage()
             testModel.amperageStage = AmperageStage.FROM_100_TO_5
-            sleepWhileRun(3)
+            sleepWhileRun(5)
             if (isRunning && testModel.measuredI < 30) {
                 appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
                 CM.device<PR>(DD2).on30to5Amperage()
                 CM.device<PR>(DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_30_TO_5
-                sleepWhileRun(3)
-//                if (isRunning && testModel.measuredI < 5) {
-//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-//                    CM.device<PR>(DD2).onMinAmperageStage()
-//                    CM.device<PR>(DD2).off30to5Amperage()
-//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
-//                }
+                sleepWhileRun(5)
+                if (isRunning && testModel.measuredI < 5) {
+                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+                    CM.device<PR>(DD2).onMinAmperageStage()
+                    CM.device<PR>(DD2).off30to5Amperage()
+                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                    sleepWhileRun(5)
+                }
             }
         }
     }

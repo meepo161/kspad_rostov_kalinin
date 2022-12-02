@@ -308,6 +308,11 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
 
     private fun checkLMDirection() {
         appendMessageToLog(LogTag.INFO, "Проверка направления вращения ОИ и НМ...")
+        try {
+            showOKCancelDialog("Посмотрите куда вращаются машины\n Нажмите ОК для продолжения")
+        } catch (e: Exception) {
+            cause = "Диалог не был обработан в течение 200 с"
+        }
         CM.device<Optimus>(CM.DeviceID.UZ91).setObjectParamsRun(380.0)
         if (isRunning) {
             frequency = 0.0
@@ -326,16 +331,18 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         CM.device<Optimus>(CM.DeviceID.UZ91).stopObjectNaVibege()
         sleep(3000)
 
-        CM.device<HPMont>(CM.DeviceID.UZ92).setObjectParams(100.0)
-        sleepWhileRun(3)
-        CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(0.0)
-        sleepWhileRun(3)
-        CM.device<HPMont>(CM.DeviceID.UZ92).startObject()
-        var frequencyLM = 0.0
-        while (frequencyLM < 5.0 && isRunning) {
-            frequencyLM += 0.1
-            sleep(100)
-            CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(frequencyLM)
+        if (isRunning) {
+            CM.device<HPMont>(CM.DeviceID.UZ92).setObjectParams(100.0)
+            sleepWhileRun(3)
+            CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(0.0)
+            sleepWhileRun(3)
+            CM.device<HPMont>(CM.DeviceID.UZ92).startObject()
+            var frequencyLM = 0.0
+            while (frequencyLM < 5.0 && isRunning) {
+                frequencyLM += 0.1
+                sleep(100)
+                CM.device<HPMont>(CM.DeviceID.UZ92).setRunningFrequency(frequencyLM)
+            }
         }
         CM.device<HPMont>(CM.DeviceID.UZ92).stopObject()
         sleepWhileRun(3)
@@ -497,26 +504,28 @@ class Load : KSPADTest(view = LoadView::class, reportTemplate = "load.xlsx") {
         }
     }
 
-    private fun selectAmperageStage() {
+
+    fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
         if (isRunning && testModel.measuredI < 100) {
             appendMessageToLog(LogTag.INFO, "Переключение на 100/5")
             CM.device<PR>(CM.DeviceID.DD2).on100To5AmperageStage()
             CM.device<PR>(CM.DeviceID.DD2).offMaxAmperageStage()
             testModel.amperageStage = AmperageStage.FROM_100_TO_5
-            sleepWhileRun(3)
+            sleepWhileRun(5)
             if (isRunning && testModel.measuredI < 30) {
                 appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
                 CM.device<PR>(CM.DeviceID.DD2).on30to5Amperage()
                 CM.device<PR>(CM.DeviceID.DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_30_TO_5
-                sleepWhileRun(3)
-//                if (isRunning && testModel.measuredI < 5) {
-//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-//                    CM.device<PR>(DD2).onMinAmperageStage()
-//                    CM.device<PR>(DD2).off30to5Amperage()
-//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
-//                }
+                sleepWhileRun(5)
+                if (isRunning && testModel.measuredI < 5) {
+                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+                    CM.device<PR>(CM.DeviceID.DD2).onMinAmperageStage()
+                    CM.device<PR>(CM.DeviceID.DD2).off30to5Amperage()
+                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                    sleepWhileRun(5)
+                }
             }
         }
     }

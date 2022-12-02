@@ -1,6 +1,6 @@
 package ru.avem.stand.modules.r.communication.model.devices.instek.gpt
 
-import ru.avem.kserialpooler.communication.utils.TransportException
+import ru.avem.kserialpooler.utils.TransportException
 import ru.avem.stand.modules.r.communication.adapters.stringascii.StringASCIIAdapter
 import ru.avem.stand.modules.r.communication.model.DeviceController
 import ru.avem.stand.modules.r.communication.model.DeviceRegister

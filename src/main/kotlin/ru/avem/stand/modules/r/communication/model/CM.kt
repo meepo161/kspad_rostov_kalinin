@@ -1,8 +1,8 @@
 package ru.avem.stand.modules.r.communication.model
 
-import ru.avem.kserialpooler.communication.Connection
-import ru.avem.kserialpooler.communication.adapters.modbusrtu.ModbusRTUAdapter
-import ru.avem.kserialpooler.communication.utils.SerialParameters
+import ru.avem.kserialpooler.Connection
+import ru.avem.kserialpooler.adapters.modbusrtu.ModbusRTUAdapter
+import ru.avem.kserialpooler.utils.SerialParameters
 import ru.avem.stand.modules.r.communication.adapters.serial.SerialAdapter
 import ru.avem.stand.modules.r.communication.model.devices.avem.avem3.AVEM3
 import ru.avem.stand.modules.r.communication.model.devices.avem.ikas10.IKAS10
@@ -27,8 +27,7 @@ object CM {
         PR61("АВЭМ ИКАС-8 - Измеритель DCR"),
         PR65("ЦС0202-1 - Меггер"),
         BT100("БИ Т42 - декодер датчика момента"),
-        PC71("ОВЕН ТХ01-224.Щ2.Р.RS - Тахометр"),
-        PV21("АВЭМ-4 (Uя)"),
+        PC71("ОВЕН ТХ01-224.Щ2.Р.RS - Тахометр")
     }
 
     private var isConnected = false
@@ -134,10 +133,10 @@ object CM {
         device.removePollingRegister(register)
     }
 
-    fun checkDevices(checkedDevices: List<IDeviceController>): List<DeviceID> {
-        checkedDevices.forEach(IDeviceController::checkResponsibility)
-        return listOfUnresponsiveDevices(checkedDevices)
-    }
+//    fun checkDevices(checkedDevices: List<IDeviceController>): List<DeviceID> {
+//        checkedDevices.forEach(IDeviceController::checkResponsibility)
+//        return listOfUnresponsiveDevices(checkedDevices)
+//    }
 
     fun listOfUnresponsiveDevices(checkedDevices: List<IDeviceController>) =
         devices.filter { checkedDevices.toList().contains(it.value) && !it.value.isResponding }.keys.toList()

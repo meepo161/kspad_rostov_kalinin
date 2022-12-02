@@ -75,8 +75,8 @@ abstract class KSPADTest(
                     testModel.protections.doorsSHSO.set()
                 }
                 if (value.toShort() and 0b10000000 != 0.toShort()) { // 8
-//                    cause = "открыты двери зоны"
-                    testModel.protections.doorsZone.unknown()
+                    cause = "открыты двери зоны"
+                    testModel.protections.doorsZone.set()
                 }
             }
         }

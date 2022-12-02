@@ -1,2 +1,2 @@
-rootProject.name = "rostov"
+rootProject.name = "kalinin"
 

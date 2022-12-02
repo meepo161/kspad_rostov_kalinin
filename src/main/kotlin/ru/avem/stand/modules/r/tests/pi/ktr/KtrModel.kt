@@ -1,24 +1,22 @@
-package ru.avem.stand.modules.r.tests.pi.startmi
+package ru.avem.stand.modules.r.tests.pi.ktr
 
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import ru.avem.stand.modules.i.TestModel
-import ru.avem.stand.modules.r.tests.AmperageStage
-import ru.avem.stand.modules.r.tests.pi.overi.OverIModel
 import tornadofx.onChange
 import kotlin.math.abs
 
-object StartMIModel : TestModel() {
+object KtrModel : TestModel() {
     override val progressProperty: DoubleProperty = SimpleDoubleProperty().also {
         it.onChange {
             measuredData.time.value = "%.0f".format(abs(it * specifiedTestTime))
         }
     }
 
-    val specifiedData = StartMIData(descriptor = SimpleStringProperty("Заданные"))
-    val measuredData = StartMIData(descriptor = SimpleStringProperty("Измеренные"))
-    val storedData = StartMIData(descriptor = SimpleStringProperty("Сохранённые"))
+    val specifiedData = KtrData(descriptor = SimpleStringProperty("Заданные"))
+    val measuredData = KtrData(descriptor = SimpleStringProperty("Измеренные"))
+    val storedData = KtrData(descriptor = SimpleStringProperty("Сохранённые"))
 
     var specifiedU = 0.0
     var specifiedI = 0.0
@@ -31,6 +29,7 @@ object StartMIModel : TestModel() {
     var specifiedF = 0.0
     var specifiedScheme = ""
 
+    var specifiedKtrI = 0.0
     var specifiedTestTime = 0.0
 
     @Volatile
@@ -46,13 +45,4 @@ object StartMIModel : TestModel() {
     var measuredI = 0.0
 
     var measuredU: Double = 0.0
-
-    @Volatile
-    var isStaticErrorTorqueSet = false
-
-    @Volatile
-    var staticErrorTorque = 0.0
-
-    @Volatile
-    var measuredTorqueMax: Double = 0.0
 }

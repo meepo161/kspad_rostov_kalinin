@@ -161,7 +161,7 @@ private fun createAsyncEngineTemplateSmall() = listOf(
         key = "P",
         title = "Мощность",
         typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1",
+        minValue = "0.1",
         value = "7.6",
         maxValue = "55",
         unit = "кВт",
@@ -175,6 +175,16 @@ private fun createAsyncEngineTemplateSmall() = listOf(
         minValue = "0",
         value = "60",
         unit = "с",
+        blockName = "Параметры испытания"
+    ),
+
+    TestItemFieldScheme(
+        key = "RUNNING_TIME",
+        title = "Время обкатки",
+        typeFormatRaw = TypeFormatTestItemField.INT.toString(),
+        minValue = "0",
+        value = "600",
+        unit = "мин",
         blockName = "Параметры испытания"
     ),
 
@@ -218,16 +228,6 @@ private fun createAsyncEngineTemplateSmall() = listOf(
         maxValue = "3600",
         unit = "с",
         blockName = "Параметры испытания"
-    ),
-
-    TestItemFieldScheme(
-        key = "R_IKAS",
-        title = "Сопротивление фазы статора при 20 °С",
-        typeFormatRaw = TypeFormatTestItemField.DOUBLE.toString(),
-        minValue = "0",
-        value = "1.2",
-        unit = "Ом",
-        blockName = "Ожидаемые параметры"
     ),
     TestItemFieldScheme(
         key = "RT_K_IKAS",
@@ -291,34 +291,12 @@ private fun createAsyncEngineTemplateSmall() = listOf(
     ),
 
     TestItemFieldScheme(
-        key = "TORQUE",
-        title = "Момент силы вращения",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
+        key = "PERCENT_ROD",
+        title = "Процент отличия тока стержней",
+        typeFormatRaw = TypeFormatTestItemField.INT.toString(),
         minValue = "0",
-        value = "48",
-        maxValue = "1000",
-        unit = "Н⋅м",
-        blockName = "Номинальные параметры"
-    ),
-    TestItemFieldScheme(
-        key = "OVER_M_RATIO",
-        title = "Мперег/Мн",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1.01",
-        value = "1.6",
-        maxValue = "1.6",
-        unit = "о.е.",
-        blockName = "Параметры испытания"
-    ),
-
-    TestItemFieldScheme(
-        key = "OVER_I_RATIO",
-        title = "Iперег/Iн",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1.01",
-        value = "1.2",
-        maxValue = "1.5",
-        unit = "о.е.",
+        value = "10",
+        unit = "%",
         blockName = "Параметры испытания"
     ),
 )
@@ -398,7 +376,7 @@ private fun createAsyncEngineTemplateBig() = listOf(
         key = "P",
         title = "Мощность",
         typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1",
+        minValue = "0.1",
         value = "30",
         maxValue = "55",
         unit = "кВт",
@@ -412,6 +390,15 @@ private fun createAsyncEngineTemplateBig() = listOf(
         minValue = "0",
         value = "60",
         unit = "с",
+        blockName = "Параметры испытания"
+    ),
+    TestItemFieldScheme(
+        key = "RUNNING_TIME",
+        title = "Время обкатки",
+        typeFormatRaw = TypeFormatTestItemField.INT.toString(),
+        minValue = "0",
+        value = "600",
+        unit = "мин",
         blockName = "Параметры испытания"
     ),
 
@@ -457,15 +444,6 @@ private fun createAsyncEngineTemplateBig() = listOf(
         blockName = "Параметры испытания"
     ),
 
-    TestItemFieldScheme(
-        key = "R_IKAS",
-        title = "Сопротивление фазы статора при 20 °С",
-        typeFormatRaw = TypeFormatTestItemField.DOUBLE.toString(),
-        minValue = "0",
-        value = "0.2",
-        unit = "Ом",
-        blockName = "Ожидаемые параметры"
-    ),
     TestItemFieldScheme(
         key = "RT_K_IKAS",
         title = "Температурный коэффициент сопротивления для расчета R приведённого",
@@ -526,36 +504,13 @@ private fun createAsyncEngineTemplateBig() = listOf(
         unit = "с",
         blockName = "Параметры испытания"
     ),
-
     TestItemFieldScheme(
-        key = "TORQUE",
-        title = "Момент силы вращения",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
+        key = "PERCENT_ROD",
+        title = "Процент отличия тока стержней",
+        typeFormatRaw = TypeFormatTestItemField.INT.toString(),
         minValue = "0",
-        value = "380",
-        maxValue = "1000",
-        unit = "Н⋅м",
-        blockName = "Номинальные параметры"
-    ),
-    TestItemFieldScheme(
-        key = "OVER_M_RATIO",
-        title = "Мперег/Мн",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1.01",
-        value = "1.6",
-        maxValue = "1.6",
-        unit = "о.е.",
-        blockName = "Параметры испытания"
-    ),
-
-    TestItemFieldScheme(
-        key = "OVER_I_RATIO",
-        title = "Iперег/Iн",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1.01",
-        value = "1.2",
-        maxValue = "1.5",
-        unit = "о.е.",
+        value = "10",
+        unit = "%",
         blockName = "Параметры испытания"
     ),
 )
@@ -762,7 +717,7 @@ fun createAsyncEngineScheme() = listOf(
         key = "P",
         title = "Мощность",
         typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1",
+        minValue = "0.1",
         value = "",
         maxValue = "55",
         unit = "кВт",
@@ -776,6 +731,15 @@ fun createAsyncEngineScheme() = listOf(
         minValue = "0",
         value = "",
         unit = "с",
+        blockName = "Параметры испытания"
+    ),
+    TestItemFieldScheme(
+        key = "RUNNING_TIME",
+        title = "Время обкатки",
+        typeFormatRaw = TypeFormatTestItemField.INT.toString(),
+        minValue = "0",
+        value = "600",
+        unit = "мин",
         blockName = "Параметры испытания"
     ),
 
@@ -820,16 +784,6 @@ fun createAsyncEngineScheme() = listOf(
         unit = "с",
         blockName = "Параметры испытания"
     ),
-
-    TestItemFieldScheme(
-        key = "R_IKAS",
-        title = "Сопротивление фазы статора при 20 °С",
-        typeFormatRaw = TypeFormatTestItemField.DOUBLE.toString(),
-        minValue = "0",
-        value = "",
-        unit = "Ом",
-        blockName = "Ожидаемые параметры"
-    ),
     TestItemFieldScheme(
         key = "RT_K_IKAS",
         title = "Температурный коэффициент сопротивления для расчета R приведённого",
@@ -870,6 +824,7 @@ fun createAsyncEngineScheme() = listOf(
         unit = "с",
         blockName = "Параметры испытания"
     ),
+
     TestItemFieldScheme(
         key = "MVZ_TOLERANCE",
         title = "Допустимое повышение тока при МВЗ",
@@ -892,34 +847,12 @@ fun createAsyncEngineScheme() = listOf(
     ),
 
     TestItemFieldScheme(
-        key = "TORQUE",
-        title = "Момент силы вращения",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
+        key = "PERCENT_ROD",
+        title = "Процент отличия тока стержней",
+        typeFormatRaw = TypeFormatTestItemField.INT.toString(),
         minValue = "0",
-        value = "",
-        maxValue = "1000",
-        unit = "Н⋅м",
-        blockName = "Номинальные параметры"
-    ),
-    TestItemFieldScheme(
-        key = "OVER_M_RATIO",
-        title = "Мперег/Мн",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1.01",
-        value = "",
-        maxValue = "1.6",
-        unit = "о.е.",
-        blockName = "Параметры испытания"
-    ),
-
-    TestItemFieldScheme(
-        key = "OVER_I_RATIO",
-        title = "Iперег/Iн",
-        typeFormatRaw = TypeFormatTestItemField.FLOAT.toString(),
-        minValue = "1.01",
-        value = "",
-        maxValue = "1.5",
-        unit = "о.е.",
+        value = "10",
+        unit = "%",
         blockName = "Параметры испытания"
     ),
 )

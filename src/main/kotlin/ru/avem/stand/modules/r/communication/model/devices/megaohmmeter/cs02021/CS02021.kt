@@ -1,6 +1,6 @@
 package ru.avem.stand.modules.r.communication.model.devices.megaohmmeter.cs02021
 
-import mu.KotlinLogging
+//import mu.KotlinLogging
 import ru.avem.stand.modules.r.communication.adapters.CRC16
 import ru.avem.stand.modules.r.communication.adapters.serial.SerialAdapter
 import ru.avem.stand.modules.r.communication.model.DeviceController
@@ -111,7 +111,7 @@ class CS02021(
                 val inputBuffer = ByteBuffer.allocate(40)
                 inputBuffer.clear()
                 val writtenBytes: Int = protocolAdapter.write(outputBuffer.array())
-                KotlinLogging.logger("TAG").info("writtenBytes=$writtenBytes")
+//                KotlinLogging.logger("TAG").info("writtenBytes=$writtenBytes")
 
                 val inputArray = ByteArray(40)
                 var attempt = 0

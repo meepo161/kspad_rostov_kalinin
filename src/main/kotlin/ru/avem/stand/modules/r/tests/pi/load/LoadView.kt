@@ -75,7 +75,7 @@ class LoadView(title: String = "НАГР", showOnStart: Boolean = true) : TestVi
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("P1, кВт", LoadData::P1.getter)
+                    column("P, кВт", LoadData::P1.getter)
                     column("f, Гц", LoadData::F.getter)
                     column("cos φ", LoadData::cos.getter)
                 }
@@ -127,20 +127,7 @@ class LoadView(title: String = "НАГР", showOnStart: Boolean = true) : TestVi
                     column("n, об/мин", LoadData::RPM.getter)
                     column("t BK1, °C", LoadData::tempAmb.getter)
                     column("t BK2, °C", LoadData::tempTI.getter)
-                    column("t статора, °C", LoadData::T0After.getter)
                 }
-            }
-        }
-        hbox {
-            tableview(observableList(test.testModel.measuredData)) {
-                minHeight = 64.0
-                maxHeight = 64.0
-                minWidth = 270.0
-                prefWidth = 270.0
-                columnResizePolicy = SmartResize.POLICY
-                mouseTransparentProperty().set(true)
-                column("КПД, о.е.", LoadData::efficiency.getter)
-                column("s, %", LoadData::sk.getter)
             }
         }
         hbox {

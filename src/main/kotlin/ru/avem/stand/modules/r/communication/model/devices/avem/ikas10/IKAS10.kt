@@ -1,8 +1,8 @@
 package ru.avem.stand.modules.r.communication.model.devices.avem.ikas10
 
-import ru.avem.kserialpooler.communication.adapters.modbusrtu.ModbusRTUAdapter
-import ru.avem.kserialpooler.communication.adapters.utils.ModbusRegister
-import ru.avem.kserialpooler.communication.utils.TransportException
+import ru.avem.kserialpooler.adapters.modbusrtu.ModbusRTUAdapter
+import ru.avem.kserialpooler.adapters.utils.ModbusRegister
+import ru.avem.kserialpooler.utils.TransportException
 import ru.avem.stand.modules.r.communication.model.DeviceController
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
 import ru.avem.stand.modules.r.communication.model.devices.avem.ikas10.IKAS10Model.Companion.CFG_SCHEME

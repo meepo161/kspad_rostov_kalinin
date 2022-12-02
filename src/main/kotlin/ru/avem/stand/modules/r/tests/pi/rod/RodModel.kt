@@ -29,7 +29,7 @@ object RodModel : TestModel() {
     var specifiedF = 0.0
     var specifiedScheme = ""
 
-    var specifiedIdleI = 0.0
+    var specifiedPercentRod = 0.0
     var specifiedTestTime = 0.0
 
     @Volatile

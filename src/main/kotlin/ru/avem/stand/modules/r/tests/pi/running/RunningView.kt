@@ -1,4 +1,4 @@
-package ru.avem.stand.modules.r.tests.psi.idle
+package ru.avem.stand.modules.r.tests.pi.running
 
 import javafx.event.EventTarget
 import javafx.geometry.Pos
@@ -11,13 +11,13 @@ import tornadofx.*
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewModule(title, showOnStart) {
+class RunningView(title: String = "Обкатка", showOnStart: Boolean = true) : TestViewModule(title, showOnStart) {
     override val configPath: Path = Paths.get("cfg/app.properties")
-    override lateinit var test: Idle
+    override lateinit var test: Running
 
     override fun injectTest() {
         if (!this::test.isInitialized) {
-            test = Idle()
+            test = Running()
         }
     }
 
@@ -52,12 +52,12 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("U AB, В", IdleData::UAB.getter)
-                    column("U BC, В", IdleData::UBC.getter)
-                    column("U CA, В", IdleData::UCA.getter)
-                    column("I A, А", IdleData::IA.getter)
-                    column("I B, А", IdleData::IB.getter)
-                    column("I C, А", IdleData::IC.getter)
+                    column("U AB, В", RunningData::UAB.getter)
+                    column("U BC, В", RunningData::UBC.getter)
+                    column("U CA, В", RunningData::UCA.getter)
+                    column("I A, А", RunningData::IA.getter)
+                    column("I B, А", RunningData::IB.getter)
+                    column("I C, А", RunningData::IC.getter)
                 }
             }
             hbox {
@@ -74,9 +74,9 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("P, кВт", IdleData::P1.getter)
-                    column("f, Гц", IdleData::F.getter)
-                    column("cos φ", IdleData::cos.getter)
+                    column("P, кВт", RunningData::P1.getter)
+                    column("f, Гц", RunningData::F.getter)
+                    column("cos φ", RunningData::cos.getter)
                 }
             }
         }
@@ -98,14 +98,14 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
                     alignment = Pos.CENTER_LEFT
 
 //                    nestedColumn("Вибро (полевая сторона) PG31") {
-//                        column("Ось Y, мм/с", IdleData::v1y.getter)
-                        column("Вибро (полевая сторона), мм/с", IdleData::v1x.getter)
-//                        column("Ось Z, мм/с", IdleData::v1z.getter)
+//                        column("Ось Y, мм/с", RunningData::v1y.getter)
+                        column("Вибро (полевая сторона), мм/с", RunningData::v1x.getter)
+//                        column("Ось Z, мм/с", RunningData::v1z.getter)
 //                    }
 //                    nestedColumn("Вибро (рабочая сторона) PG32") {
-//                        column("Ось Y, мм/с", IdleData::v2y.getter)
-                        column("Вибро (рабочая сторона), мм/с", IdleData::v2x.getter)
-//                        column("Ось Z, мм/с", IdleData::v2z.getter)
+//                        column("Ось Y, мм/с", RunningData::v2y.getter)
+                        column("Вибро (рабочая сторона), мм/с", RunningData::v2x.getter)
+//                        column("Ось Z, мм/с", RunningData::v2z.getter)
 //                    }
                 }
             }
@@ -123,9 +123,9 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("n об/мин", IdleData::RPM.getter)
-                    column("t BK1, °C", IdleData::tempAmb.getter)
-                    column("t BK2, °C", IdleData::tempTI.getter)
+                    column("n об/мин", RunningData::RPM.getter)
+                    column("t BK1, °C", RunningData::tempAmb.getter)
+                    column("t BK2, °C", RunningData::tempTI.getter)
                 }
             }
         }
@@ -143,8 +143,8 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                 alignment = Pos.BOTTOM_RIGHT
 
-                column("Время, с", IdleData::time.getter)
-                column("Результат", IdleData::result.getter)
+                column("Время, с", RunningData::time.getter)
+                column("Результат", RunningData::result.getter)
             }
         }
     }.addClass(Styles.paneBorders)

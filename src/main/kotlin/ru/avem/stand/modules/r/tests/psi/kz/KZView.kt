@@ -73,7 +73,7 @@ class KZView(title: String = "КЗ", showOnStart: Boolean = true) : TestViewModu
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("P1, кВт", KZData::P1.getter)
+                    column("P, кВт", KZData::P1.getter)
                     column("f, Гц", KZData::F.getter)
                     column("cos φ", KZData::cos.getter)
                 }

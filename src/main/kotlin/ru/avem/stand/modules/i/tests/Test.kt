@@ -180,7 +180,39 @@ abstract class Test(
             while (isRunning) {
                 val list = CM.listOfUnresponsiveDevices(checkableDevices)
                 if (list.isNotEmpty()) {
-                    cause = "следующие приборы не отвечают на запросы: $list"
+                    val listNameDevices = mutableListOf<String>()
+                    list.forEach {
+                        when (it.name) {
+                            "DD2" -> {
+                                listNameDevices.add("DD2 ОВЕН ПР102 - Программируемое реле ")
+                            }
+                            "PAV41" -> {
+                                listNameDevices.add("PAV41 Satec PM130-PLUS-P - Универсальный прибор ")
+                            }
+                            "UZ91" -> {
+                                listNameDevices.add("UZ91 Optimus - Преобразователь частоты ОИ ")
+                            }
+                            "UZ92" -> {
+                                listNameDevices.add("UZ92 HPMont - Преобразователь частоты НМ ")
+                            }
+                            "PS81" -> {
+                                listNameDevices.add("PS81 ТРМ202 - Термометр - (Вход 1 - окр. воздух | Вход 2 - ОИ вал) ")
+                            }
+                            "PV24" -> {
+                                listNameDevices.add("PV24 АВЭМ-3-04 - Прибор ВВ ")
+                            }
+                            "PR61" -> {
+                                listNameDevices.add("PR61 ЦС0202-1 - Меггер ")
+                            }
+                            "PC71" -> {
+                                listNameDevices.add("PC71 ОВЕН ТХ01-224.Щ2.Р.RS - Тахометр ")
+                            }
+                        }
+                    }
+                    cause =
+                        "следующие приборы не отвечают на запросы: $listNameDevices"
+                            .replace("[", "")
+                            .replace("]", "")
                 }
                 sleep(100)
             }
@@ -229,14 +261,18 @@ abstract class Test(
         }
     }
 
-    protected fun sleepWhileRun(timeSecond: Number, progressProperty: DoubleProperty? = null, isNeedContinue: () -> Boolean = { true }) {
+    protected fun sleepWhileRun(
+        timeSecond: Number,
+        progressProperty: DoubleProperty? = null,
+        isNeedContinue: () -> Boolean = { true }
+    ) {
         val startStamp = System.currentTimeMillis()
         while (isRunning && isNeedContinue()) {
             val progress = (System.currentTimeMillis() - startStamp) / (timeSecond.toDouble() * 1000)
             if (progress < 1.0) {
-                    runLater {
-                        progressProperty?.value = 1.0 - progress
-                    }
+                runLater {
+                    progressProperty?.value = 1.0 - progress
+                }
                 sleep(100)
             } else {
                 if (isNeedContinue()) {

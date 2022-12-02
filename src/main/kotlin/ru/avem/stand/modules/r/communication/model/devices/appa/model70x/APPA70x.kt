@@ -1,7 +1,7 @@
 package ru.avem.stand.modules.r.communication.model.devices.appa.model70x
 
-import mu.KotlinLogging
-import ru.avem.kserialpooler.communication.utils.TransportException
+//import mu.KotlinLogging
+import ru.avem.kserialpooler.utils.TransportException
 import ru.avem.stand.modules.r.communication.adapters.serial.SerialAdapter
 import ru.avem.stand.modules.r.communication.model.DeviceController
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
@@ -53,7 +53,7 @@ class APPA70x(
             }
         } while (finalBuffer.position() < 17 && ++attempt < 10)
         isResponding = finalBuffer.position() == 17
-        KotlinLogging.logger("TAG").info("bytes: " + Arrays.toString(finalBuffer.array()))
+//        KotlinLogging.logger("TAG").info("bytes: " + Arrays.toString(finalBuffer.array()))
         analyzeResponse(finalBuffer.array())
     }
 

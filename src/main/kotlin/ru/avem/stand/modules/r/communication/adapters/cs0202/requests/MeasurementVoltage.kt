@@ -1,6 +1,6 @@
 package ru.avem.stand.modules.r.communication.adapters.cs0202.requests
 
-import ru.avem.kserialpooler.communication.utils.LogicException
+import ru.avem.kserialpooler.utils.LogicException
 import ru.avem.stand.modules.r.communication.adapters.cs0202.requests.Cs0202Request.Companion.BYTE_SIZE_OF_CRC
 import ru.avem.stand.modules.r.communication.adapters.cs0202.requests.Cs0202Request.Companion.BYTE_SIZE_OF_DATA_RESPONSE
 import ru.avem.stand.modules.r.communication.adapters.cs0202.requests.Cs0202Request.Companion.BYTE_SIZE_OF_DEVICE_ID

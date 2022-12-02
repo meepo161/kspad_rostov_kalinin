@@ -1,7 +1,7 @@
 package ru.avem.stand.modules.r.communication.adapters.stringascii
 
-import ru.avem.kserialpooler.communication.Connection
-import ru.avem.kserialpooler.communication.adapters.AdapterInterface
+import ru.avem.kserialpooler.Connection
+import ru.avem.kserialpooler.adapters.AdapterInterface
 import java.nio.charset.StandardCharsets
 
 class StringASCIIAdapter(override val connection: Connection) : AdapterInterface {

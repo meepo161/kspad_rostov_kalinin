@@ -39,7 +39,7 @@ fun showCancelConfirmation(windowEvent: WindowEvent, currentWindow: Window?, cur
     } else {
         confirmation(
             "Отмена",
-            "Вы действительно хотите остановить и отменить испытание?",
+            "Вы действительно хотите остановить\n и отменить испытание?",
             ButtonType("Да"),
             ButtonType("Нет"),
             title = "Отмена",
@@ -76,7 +76,7 @@ fun showCancelConfirmation(windowEvent: WindowEvent, currentWindow: Window?, cur
 fun showSaveDialogConfirmation(currentWindow: Window?) {
     confirmation(
         "Конец",
-        "Все выбранные испытания завершены/отменены. Протоколы сохранены",
+        "Все выбранные испытания завершены/отменены.\n Протоколы сохранены",
         ButtonType("Ок"),
         title = "Конец",
         owner = currentWindow

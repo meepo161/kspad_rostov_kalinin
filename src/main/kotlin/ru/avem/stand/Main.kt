@@ -8,14 +8,10 @@ import ru.avem.stand.modules.r.common.AggregateView
 import ru.avem.stand.modules.r.storage.Properties
 import ru.avem.stand.modules.r.storage.database.validateDB
 import ru.avem.stand.modules.r.tests.pi.incn.IncN
+import ru.avem.stand.modules.r.tests.pi.ktr.Ktr
 import ru.avem.stand.modules.r.tests.pi.load.Load
-import ru.avem.stand.modules.r.tests.pi.maxm.MaxM
-import ru.avem.stand.modules.r.tests.pi.minm.MinM
-import ru.avem.stand.modules.r.tests.pi.overi.OverI
-import ru.avem.stand.modules.r.tests.pi.overm.OverM
 import ru.avem.stand.modules.r.tests.pi.rod.Rod
-import ru.avem.stand.modules.r.tests.pi.startmi.StartMI
-import ru.avem.stand.modules.r.tests.pi.varyuf.VaryUF
+import ru.avem.stand.modules.r.tests.pi.running.Running
 import ru.avem.stand.modules.r.tests.psi.hv.HV
 import ru.avem.stand.modules.r.tests.psi.idle.Idle
 import ru.avem.stand.modules.r.tests.psi.ikas.IKAS
@@ -31,6 +27,8 @@ val head = head {
             HV(),
             IKAS(),
             Idle(),
+            Running(),
+            Ktr(),
             MVZ(),
             KZ(),
             Load(),

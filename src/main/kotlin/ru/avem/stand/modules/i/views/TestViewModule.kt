@@ -161,7 +161,7 @@ abstract class TestViewModule(title: String, showOnStart: Boolean = false) : Vie
                 maxHeight = 64.0
                 columnResizePolicy = SmartResize.POLICY
                 mouseTransparentProperty().set(true)
-                column("P1, кВт", TestItemData::P.getter)
+                column("P2, кВт", TestItemData::P.getter)
             }
             tableview(observableList(test.testModel.testItemData)) {
                 minHeight = 64.0
@@ -253,7 +253,6 @@ abstract class TestViewModule(title: String, showOnStart: Boolean = false) : Vie
                     text = it
                     this.tableRow.toggleClass(Styles.greenText, it == "В НОРМЕ")
                     this.tableRow.toggleClass(Styles.redText, it == "СРАБОТАЛА")
-                    this.tableRow.toggleClass(Styles.blueText, it == "НЕИЗВЕСТНО")
                 }
             }
             tableview(observableList(test.testModel.protections.doorsSHSO)) {

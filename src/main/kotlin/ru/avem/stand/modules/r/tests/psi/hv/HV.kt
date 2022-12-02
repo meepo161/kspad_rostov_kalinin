@@ -70,6 +70,7 @@ class HV : KSPADTest(view = HVView::class, reportTemplate = "hv.xlsx") {
                 CM.startPoll(this, AVEM3Model.U_TRMS) { value ->
                     testModel.measuredData.U.value = (value.toDouble()).autoformat()
                     testModel.measuredU = testModel.measuredData.U.value.toDoubleOrDefault(0.0)
+                    testModel.measuredData.F.value = "50.0"
                 }
             }
         }
@@ -83,9 +84,6 @@ class HV : KSPADTest(view = HVView::class, reportTemplate = "hv.xlsx") {
                     if (testModel.measuredI > testModel.specifiedIHV) {
                         cause = "ток утечки превысил заданный"
                     }
-                }
-                CM.startPoll(this, PM130Model.F_REGISTER) { value ->
-                    testModel.measuredData.F.value = value.autoformat()
                 }
             }
         }

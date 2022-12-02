@@ -68,13 +68,6 @@ fun getAlignedString(input: String, columnWidth: Int, alignment: String = "LEFT"
     }
 }
 
-@ExperimentalTime
-fun toHHmmss(time: Long): String {
-    return time.milliseconds.toComponents { hours, minutes, seconds, _ ->
-        "${hours.padZero()}:${minutes.padZero()}:${seconds.padZero()}"
-    }
-}
-
 private fun Int.padZero() = toString().padStart(2, '0')
 
 fun smartSleep(

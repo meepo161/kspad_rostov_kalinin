@@ -1,10 +1,10 @@
 package ru.avem.stand.modules.r.communication.model.devices.hpmont
 
-import ru.avem.kserialpooler.communication.adapters.modbusrtu.ModbusRTUAdapter
-import ru.avem.kserialpooler.communication.adapters.utils.ModbusRegister
-import ru.avem.kserialpooler.communication.utils.TransportException
-import ru.avem.kserialpooler.communication.utils.TypeByteOrder
-import ru.avem.kserialpooler.communication.utils.allocateOrderedByteBuffer
+import ru.avem.kserialpooler.adapters.modbusrtu.ModbusRTUAdapter
+import ru.avem.kserialpooler.adapters.utils.ModbusRegister
+import ru.avem.kserialpooler.utils.TransportException
+import ru.avem.kserialpooler.utils.TypeByteOrder
+import ru.avem.kserialpooler.utils.allocateOrderedByteBuffer
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
 import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.CONTROL_REGISTER
 import ru.avem.stand.modules.r.communication.model.devices.hpmont.HPMontModel.Companion.RUNNING_FREQUENCY

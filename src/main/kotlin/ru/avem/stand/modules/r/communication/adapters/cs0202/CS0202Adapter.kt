@@ -1,9 +1,9 @@
 package ru.avem.stand.modules.r.communication.adapters.cs0202
 
-import ru.avem.kserialpooler.communication.Connection
-import ru.avem.kserialpooler.communication.adapters.AdapterInterface
-import ru.avem.kserialpooler.communication.utils.ConnectionException
-import ru.avem.kserialpooler.communication.utils.InvalidCommandException
+import ru.avem.kserialpooler.Connection
+import ru.avem.kserialpooler.adapters.AdapterInterface
+import ru.avem.kserialpooler.utils.ConnectionException
+import ru.avem.kserialpooler.utils.InvalidCommandException
 import ru.avem.stand.modules.r.communication.adapters.cs0202.requests.*
 
 class CS0202Adapter(override val connection: Connection) : AdapterInterface {

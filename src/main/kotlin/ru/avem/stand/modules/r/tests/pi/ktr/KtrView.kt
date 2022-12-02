@@ -1,4 +1,4 @@
-package ru.avem.stand.modules.r.tests.psi.idle
+package ru.avem.stand.modules.r.tests.pi.ktr
 
 import javafx.event.EventTarget
 import javafx.geometry.Pos
@@ -11,13 +11,13 @@ import tornadofx.*
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewModule(title, showOnStart) {
+class KtrView(title: String = "КТР", showOnStart: Boolean = true) : TestViewModule(title, showOnStart) {
     override val configPath: Path = Paths.get("cfg/app.properties")
-    override lateinit var test: Idle
+    override lateinit var test: Ktr
 
     override fun injectTest() {
         if (!this::test.isInitialized) {
-            test = Idle()
+            test = Ktr()
         }
     }
 
@@ -42,22 +42,51 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
                 hboxConstraints {
                     hGrow = Priority.ALWAYS
                 }
-                tableview(observableList(test.testModel.measuredData)) {
-                    minHeight = 64.0
-                    maxHeight = 64.0
-                    minWidth = 800.0
-                    prefWidth = 800.0
-                    columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
-                    mouseTransparentProperty().set(true)
+                vbox {
+                    tableview(observableList(test.testModel.measuredData)) {
+                        minHeight = 64.0
+                        maxHeight = 64.0
+                        minWidth = 800.0
+                        prefWidth = 800.0
+                        columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                        mouseTransparentProperty().set(true)
 
-                    alignment = Pos.CENTER_LEFT
+                        alignment = Pos.CENTER_LEFT
 
-                    column("U AB, В", IdleData::UAB.getter)
-                    column("U BC, В", IdleData::UBC.getter)
-                    column("U CA, В", IdleData::UCA.getter)
-                    column("I A, А", IdleData::IA.getter)
-                    column("I B, А", IdleData::IB.getter)
-                    column("I C, А", IdleData::IC.getter)
+                        column("U AB, В", KtrData::UAB.getter)
+                        column("U BC, В", KtrData::UBC.getter)
+                        column("U CA, В", KtrData::UCA.getter)
+                        column("I A, А", KtrData::IA.getter)
+                        column("I B, А", KtrData::IB.getter)
+                        column("I C, А", KtrData::IC.getter)
+                    }
+                    tableview(observableList(test.testModel.measuredData)) {
+                        minHeight = 64.0
+                        maxHeight = 64.0
+                        minWidth = 400.0
+                        prefWidth = 400.0
+                        columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                        mouseTransparentProperty().set(true)
+
+                        alignment = Pos.CENTER_LEFT
+
+                        column("U2 AB, В", KtrData::UAB2.getter)
+                        column("U2 BC, В", KtrData::UBC2.getter)
+                        column("U2 CA, В", KtrData::UCA2.getter)
+                    }
+                    tableview(observableList(test.testModel.measuredData)) {
+                        minHeight = 64.0
+                        maxHeight = 64.0
+                        minWidth = 120.0
+                        prefWidth = 120.0
+                        columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                        mouseTransparentProperty().set(true)
+
+                        alignment = Pos.CENTER_LEFT
+
+                        column("КТР", KtrData::KTR.getter)
+                    }
+
                 }
             }
             hbox {
@@ -74,9 +103,9 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("P, кВт", IdleData::P1.getter)
-                    column("f, Гц", IdleData::F.getter)
-                    column("cos φ", IdleData::cos.getter)
+                    column("P, кВт", KtrData::P1.getter)
+                    column("f, Гц", KtrData::F.getter)
+                    column("cos φ", KtrData::cos.getter)
                 }
             }
         }
@@ -98,14 +127,14 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
                     alignment = Pos.CENTER_LEFT
 
 //                    nestedColumn("Вибро (полевая сторона) PG31") {
-//                        column("Ось Y, мм/с", IdleData::v1y.getter)
-                        column("Вибро (полевая сторона), мм/с", IdleData::v1x.getter)
-//                        column("Ось Z, мм/с", IdleData::v1z.getter)
+//                        column("Ось Y, мм/с", KtrData::v1y.getter)
+                    column("Вибро (полевая сторона), мм/с", KtrData::v1x.getter)
+//                        column("Ось Z, мм/с", KtrData::v1z.getter)
 //                    }
 //                    nestedColumn("Вибро (рабочая сторона) PG32") {
-//                        column("Ось Y, мм/с", IdleData::v2y.getter)
-                        column("Вибро (рабочая сторона), мм/с", IdleData::v2x.getter)
-//                        column("Ось Z, мм/с", IdleData::v2z.getter)
+//                        column("Ось Y, мм/с", KtrData::v2y.getter)
+                    column("Вибро (рабочая сторона), мм/с", KtrData::v2x.getter)
+//                        column("Ось Z, мм/с", KtrData::v2z.getter)
 //                    }
                 }
             }
@@ -123,9 +152,9 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                     alignment = Pos.CENTER_LEFT
 
-                    column("n об/мин", IdleData::RPM.getter)
-                    column("t BK1, °C", IdleData::tempAmb.getter)
-                    column("t BK2, °C", IdleData::tempTI.getter)
+                    column("n об/мин", KtrData::RPM.getter)
+                    column("t BK1, °C", KtrData::tempAmb.getter)
+                    column("t BK2, °C", KtrData::tempTI.getter)
                 }
             }
         }
@@ -143,8 +172,8 @@ class IdleView(title: String = "ХХ", showOnStart: Boolean = true) : TestViewMo
 
                 alignment = Pos.BOTTOM_RIGHT
 
-                column("Время, с", IdleData::time.getter)
-                column("Результат", IdleData::result.getter)
+                column("Время, с", KtrData::time.getter)
+                column("Результат", KtrData::result.getter)
             }
         }
     }.addClass(Styles.paneBorders)

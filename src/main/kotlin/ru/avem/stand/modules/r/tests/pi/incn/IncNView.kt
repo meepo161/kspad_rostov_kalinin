@@ -6,7 +6,6 @@ import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import ru.avem.stand.modules.i.views.Styles
 import ru.avem.stand.modules.i.views.TestViewModule
-import ru.avem.stand.modules.r.tests.pi.overi.OverIData
 import tornadofx.*
 import java.nio.file.Path
 import java.nio.file.Paths

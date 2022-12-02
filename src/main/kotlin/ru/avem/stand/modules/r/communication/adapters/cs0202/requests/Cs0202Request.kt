@@ -1,6 +1,6 @@
 package ru.avem.stand.modules.r.communication.adapters.cs0202.requests
 
-import ru.avem.kserialpooler.communication.utils.TransportException
+import ru.avem.kserialpooler.utils.TransportException
 import ru.avem.stand.modules.r.communication.adapters.cs0202.utils.CRC
 import kotlin.experimental.or
 

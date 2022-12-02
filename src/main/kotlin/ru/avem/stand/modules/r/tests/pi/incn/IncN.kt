@@ -251,26 +251,28 @@ class IncN : KSPADTest(view = IncNView::class, reportTemplate = "incn.xlsx") {
         }
     }
 
-    private fun selectAmperageStage() {
+
+    fun selectAmperageStage() {
         appendMessageToLog(LogTag.INFO, "Подбор токовой ступени...")
         if (isRunning && testModel.measuredI < 100) {
             appendMessageToLog(LogTag.INFO, "Переключение на 100/5")
-            CM.device<PR>(DD2).on100To5AmperageStage()
-            CM.device<PR>(DD2).offMaxAmperageStage()
+            CM.device<PR>(CM.DeviceID.DD2).on100To5AmperageStage()
+            CM.device<PR>(CM.DeviceID.DD2).offMaxAmperageStage()
             testModel.amperageStage = AmperageStage.FROM_100_TO_5
-            sleepWhileRun(3)
+            sleepWhileRun(5)
             if (isRunning && testModel.measuredI < 30) {
                 appendMessageToLog(LogTag.INFO, "Переключение на 30/5")
-                CM.device<PR>(DD2).on30to5Amperage()
-                CM.device<PR>(DD2).off100To5AmperageStage()
+                CM.device<PR>(CM.DeviceID.DD2).on30to5Amperage()
+                CM.device<PR>(CM.DeviceID.DD2).off100To5AmperageStage()
                 testModel.amperageStage = AmperageStage.FROM_30_TO_5
-                sleepWhileRun(3)
-//                if (isRunning && testModel.measuredI < 5) {
-//                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
-//                    CM.device<PR>(DD2).onMinAmperageStage()
-//                    CM.device<PR>(DD2).off30to5Amperage()
-//                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
-//                }
+                sleepWhileRun(5)
+                if (isRunning && testModel.measuredI < 5) {
+                    appendMessageToLog(LogTag.INFO, "Переключение на 5/5")
+                    CM.device<PR>(CM.DeviceID.DD2).onMinAmperageStage()
+                    CM.device<PR>(CM.DeviceID.DD2).off30to5Amperage()
+                    testModel.amperageStage = AmperageStage.FROM_5_TO_5
+                    sleepWhileRun(5)
+                }
             }
         }
     }

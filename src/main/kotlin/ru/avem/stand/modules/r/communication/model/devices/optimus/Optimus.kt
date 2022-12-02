@@ -1,10 +1,10 @@
 package ru.avem.stand.modules.r.communication.model.devices.optimus
 
-import ru.avem.kserialpooler.communication.adapters.modbusrtu.ModbusRTUAdapter
-import ru.avem.kserialpooler.communication.adapters.utils.ModbusRegister
-import ru.avem.kserialpooler.communication.utils.TransportException
-import ru.avem.kserialpooler.communication.utils.TypeByteOrder
-import ru.avem.kserialpooler.communication.utils.allocateOrderedByteBuffer
+import ru.avem.kserialpooler.adapters.modbusrtu.ModbusRTUAdapter
+import ru.avem.kserialpooler.adapters.utils.ModbusRegister
+import ru.avem.kserialpooler.utils.TransportException
+import ru.avem.kserialpooler.utils.TypeByteOrder
+import ru.avem.kserialpooler.utils.allocateOrderedByteBuffer
 import ru.avem.stand.modules.r.communication.model.DeviceController
 import ru.avem.stand.modules.r.communication.model.DeviceRegister
 import java.nio.ByteBuffer

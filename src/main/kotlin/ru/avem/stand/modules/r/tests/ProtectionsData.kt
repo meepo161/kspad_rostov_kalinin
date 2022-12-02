@@ -20,17 +20,11 @@ data class ProtectionsData(
 
 class Protection(
     private val notTriggeredValue: String = "В НОРМЕ",
-    private val triggeredValue: String = "СРАБОТАЛА",
-    private val unknownValue: String = "НЕИЗВЕСТНО",
+    private val triggeredValue: String = "СРАБОТАЛА"
 ) {
     val prop = SimpleStringProperty(notTriggeredValue)
 
     var isTriggered: Boolean = false
-
-    fun unknown() {
-        prop.value = unknownValue
-    }
-
     fun set() {
         isTriggered = true
         prop.value = triggeredValue
